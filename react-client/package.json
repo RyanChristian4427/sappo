@@ -1,5 +1,5 @@
 {
-  "name": "react-typescript-mobx-boilerplate",
+  "name": "sappo-react-client",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -7,7 +7,6 @@
     "build": "react-scripts build"
   },
   "dependencies": {
-    "ts-api-toolkit": "^1.0.0",
     "bulma": "^0.8.0",
     "mobx": "^5.14.2",
     "mobx-react": "^6.1.4",
@@ -16,6 +15,7 @@
     "react-dom": "^16.11.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.2.0",
+    "ts-api-toolkit": "^1.0.0",
     "typescript": "3.6.4"
   },
   "devDependencies": {
@@ -32,5 +32,5 @@
     "last 1 firefox version",
     "last 1 safari version"
   ],
-  "proxy": "https://localhost:8000"
+  "proxy": "http://localhost:8000"
 }

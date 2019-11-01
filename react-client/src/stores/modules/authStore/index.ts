@@ -6,21 +6,11 @@ import User from "../../../models/User";
 export class AuthStore {
     @observable
     public inProgress = false;
+
     @observable
     public errors: string = "";
 
-    @observable
-    public values = {
-        email: '',
-        password: '',
-    };
-
     @observable currentUser: User | undefined;
-
-    @action reset() {
-        this.values.email = '';
-        this.values.password = '';
-    };
 
     @action async login(credentials: LoginUser) {
         this.inProgress = true;
@@ -35,7 +25,7 @@ export class AuthStore {
     };
 
     private setLoginState(user: AuthSuccessResponse) {
-        this.currentUser = new User(user.first_name + " " + user.last_name, user.email, user.token);
+        this.currentUser = new User(user.username, user.token);
         jwtService.saveToken(user.token);
     }
 }

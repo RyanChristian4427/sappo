@@ -1,8 +1,23 @@
-.control {
-  text-align: center;
-}
-
 .login-form {
   text-align: center;
   margin-top: 20vh;
+  margin-left: 30vw;
+  margin-right: 30vw;
+  background: #EEE;
+  height: 40vh;
+  border-radius: 10px;
+
+  .control {
+    text-align: center;
+    padding-left: 2vw;
+    padding-right: 2vw;
+  }
+
+  .label {
+    padding-top: 5vh;
+  }
+
+  .button {
+    margin-top: 5vh;
+  }
 }

@@ -3,13 +3,13 @@ import bodyParser from "body-parser";
 import path from "path";
 
 // Controllers (route handlers)
-import * as apiController from "./controllers/api";
+import * as authController from "./controllers/auth";
 
 // Create Express server
 const app = express();
 
 // Express configuration
-app.set("port", process.env.PORT || 3000);
+app.set("port", process.env.PORT || 8000);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -20,7 +20,7 @@ app.use(
 /**
  * API examples routes.
  */
-app.get("/api", apiController.getApi);
+app.post("/api/v1/users/login", authController.login);
 
 
 export default app;
