@@ -1,0 +1,36 @@
+{
+  "name": "react-typescript-mobx-boilerplate",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "react-scripts start",
+    "build": "react-scripts build"
+  },
+  "dependencies": {
+    "ts-api-toolkit": "^1.0.0",
+    "bulma": "^0.8.0",
+    "mobx": "^5.14.2",
+    "mobx-react": "^6.1.4",
+    "node-sass": "^4.13.0",
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "3.2.0",
+    "typescript": "3.6.4"
+  },
+  "devDependencies": {
+    "@types/node": "12.11.6",
+    "@types/react": "16.9.9",
+    "@types/react-dom": "16.9.2",
+    "@types/react-router-dom": "^5.1.0"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    "last 1 chrome version",
+    "last 1 firefox version",
+    "last 1 safari version"
+  ],
+  "proxy": "https://localhost:8000"
+}

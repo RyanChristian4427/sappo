@@ -1,0 +1,15 @@
+@charset "utf-8";
+
+.App {
+  background-color: #282c34;
+  min-height: 100vh;
+}
+
+.Header {
+  color: white;
+  text-align: center;
+  padding-top: 5vh;
+}
+
+// Importing all of Bulma
+@import '../../node_modules/bulma/bulma.sass';
