@@ -1,0 +1,11 @@
+// Color Scheme (and names) generated from https://coolors.co/. I tried to find a fitting green scheme to match the stereotypical frog
+$theme-isabelline: #F3E8EE;
+$theme-charleston-green: #BACDB0;
+$theme-xanadu: #729B79;
+$theme-deep-space-sparkle: #475B63;
+$theme-ash-grey: #2E2C2F;
+
+$colors: (
+        "xanadu-light": ($theme-xanadu, $theme-isabelline),
+        "xanadu-dark": ($theme-xanadu, $theme-deep-space-sparkle),
+);
