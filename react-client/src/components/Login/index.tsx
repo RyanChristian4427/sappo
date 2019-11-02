@@ -25,7 +25,7 @@ export default class Login extends React.Component<{}, {}> {
 
     render(): React.ReactNode {
         if (this.state.redirect) {
-            return <Redirect to='/' />;
+            return <Redirect to='/chat' />;
         }
 
         return (
