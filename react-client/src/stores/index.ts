@@ -1,6 +1,6 @@
 import authStore from './modules/authStore';
 
-export function createStores() {
+export function createStores(): {} {
     return {
         authStore,
     }

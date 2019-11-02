@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "serve": "react-scripts start",
-    "build": "react-scripts build"
+    "build": "react-scripts build",
+    "lint": "eslint src/**/*.{js,ts}"
   },
   "dependencies": {
     "bulma": "^0.8.0",
