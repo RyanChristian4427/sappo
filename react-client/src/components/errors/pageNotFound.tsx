@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react';
 
 export default class PageNotFound extends React.Component<{}, {}> {
-    render() {
+    render(): React.ReactNode {
         return (
             <div className="Error">
                 <header className="Header">
