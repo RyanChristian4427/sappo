@@ -1,15 +1,9 @@
 @charset "utf-8";
 @import 'variables';
 
-.App {
+#root {
   background-color: $theme-isabelline;
   min-height: 100vh;
-}
-
-.Header {
-  color: white;
-  text-align: center;
-  padding-top: 5vh;
 }
 
 // Importing all of Bulma

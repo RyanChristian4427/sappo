@@ -17,6 +17,7 @@ module.exports =  {
         "quotes": "off",
         "@typescript-eslint/quotes": ["warn", "single"],
         "@typescript-eslint/no-use-before-define": ["error", { "classes": false }],
-        "arrow-parens": "warn"
+        "arrow-parens": "warn",
+        "@typescript-eslint/ban-ts-ignore": ["warn"]
     },
 };

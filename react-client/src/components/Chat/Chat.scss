@@ -1,0 +1,27 @@
+@import 'styles/variables.scss';
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0
+}
+
+.chat-page {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+
+  .hero {
+    flex: 0 1 auto;
+  }
+
+  .chat-container {
+    margin: 2vh 10vw;
+    flex: 1 0 auto;
+    border-radius: 20px;
+    overflow-y: auto;
+    height: 80vh;
+    background: $theme-charleston-green;
+  }
+}

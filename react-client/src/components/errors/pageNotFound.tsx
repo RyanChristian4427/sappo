@@ -6,7 +6,7 @@ export default class PageNotFound extends React.Component<{}, {}> {
     render(): React.ReactNode {
         return (
             <div className="error-page">
-                <section className="hero is-xanadu-light">
+                <section className="hero is-xanadu-light is-bold">
                     <div className="hero-body">
                         <div className="container">
                             <h1 className="title">

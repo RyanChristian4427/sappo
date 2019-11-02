@@ -1,0 +1,17 @@
+@import 'styles/variables.scss';
+
+.chat-message {
+  margin: 10px;
+
+  .container {
+    background: $theme-xanadu;
+    border-radius: 20px;
+    display: inline-block;
+    padding: 4px;
+
+    h1 {
+      margin: 5px
+    }
+  }
+
+}

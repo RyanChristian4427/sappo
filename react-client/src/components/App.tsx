@@ -13,19 +13,17 @@ export default class App extends React.Component<{}, {}> {
   render(): React.ReactNode {
     return (
         <BrowserRouter>
-          <div className="App">
-            <Switch>
-              <Route path="/chat">
-                <Chat />
-              </Route>
-              <Route exact path="/">
-                <Login />
-              </Route>
-              <Route path="/*">
-                <PageNotFound />
-              </Route>
-            </Switch>
-          </div>
+          <Switch>
+            <Route path="/chat">
+              <Chat />
+            </Route>
+            <Route exact path="/">
+              <Login />
+            </Route>
+            <Route path="/*">
+              <PageNotFound />
+            </Route>
+          </Switch>
         </BrowserRouter>
     );
   }
