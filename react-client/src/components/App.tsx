@@ -18,7 +18,7 @@ export default class App extends React.Component<{}, {}> {
               <Route path="/chat">
                 <Chat />
               </Route>
-              <Route path="/">
+              <Route exact path="/">
                 <Login />
               </Route>
               <Route path="/*">

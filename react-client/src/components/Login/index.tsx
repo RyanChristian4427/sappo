@@ -29,7 +29,7 @@ export default class Login extends React.Component<{}, {}> {
         }
 
         return (
-            <div>
+            <div className="login-page">
                 <section className="hero is-xanadu-light">
                     <div className="hero-body">
                         <div className="container">
@@ -47,7 +47,11 @@ export default class Login extends React.Component<{}, {}> {
                                 <input className="input" type="text" placeholder="User Name" onChange={this.handleChange()}/>
                             </div>
                         </div>
-                        <button className="button is-xanadu-dark is-right" onClick={this.handleSubmitForm}>Submit</button>
+                        <div className="level">
+                            <div className="level-right">
+                                <button className="button is-xanadu-dark level-item" onClick={this.handleSubmitForm}>Submit</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

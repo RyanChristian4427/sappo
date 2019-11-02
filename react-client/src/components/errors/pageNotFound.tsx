@@ -1,14 +1,28 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
+import './Error.scss'
 
 export default class PageNotFound extends React.Component<{}, {}> {
     render(): React.ReactNode {
         return (
-            <div className="Error">
-                <header className="Header">
-                    <h1 className="is-size-1">
-                        Page Not Found
-                    </h1>
-                </header>
+            <div className="error-page">
+                <section className="hero is-xanadu-light">
+                    <div className="hero-body">
+                        <div className="container">
+                            <h1 className="title">
+                                Sorry
+                            </h1>
+                            <h2 className="subtitle">
+                                This page does not yet exist
+                            </h2>
+                        </div>
+                    </div>
+                </section>
+                <div className="card">
+                    <div className="level" id="layered-background">
+                        <Link className="button is-xanadu-dark level-item" to="/chat">Back to Safety</Link>
+                    </div>
+                </div>
             </div>
         );
     }

@@ -1,6 +1,6 @@
 @import '../../styles/variables';
 
-.login-page {
+.error-page {
   .card {
     border-radius: 23px;
     background: $theme-xanadu;
@@ -12,6 +12,6 @@
   #layered-background {
     border-radius: 20px;
     background: $theme-charleston-green;
-    padding: 5vh 5vw 5vh;
+    padding: 5vh 15vw 5vh;
   }
 }
