@@ -1,9 +1,15 @@
 export default class User {
     private username: string;
-    private token: string;
 
-    public constructor(username: string, token: string) {
+    public constructor(username: string) {
         this.username = username;
-        this.token = token;
+    }
+
+    public get Username(): string {
+        return this.username;
+    }
+
+    public set Username(newUsername: string) {
+        this.username = newUsername;
     }
 }

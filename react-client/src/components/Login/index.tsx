@@ -64,9 +64,9 @@ export default class Login extends React.Component<{}, {}> {
 
     private handleSubmitForm = (e: React.FormEvent<HTMLButtonElement>): void => {
         e.preventDefault();
-        const { username } = this;
-        this.injectedProps.authStore
-            .login({user: {username}})
-            .then(() => this.setState({redirect: true}))
+        // const { username } = this;
+        // this.injectedProps.authStore
+        //     .login({user: {username}})
+        //     .then(() => this.setState({redirect: true}))
     }
 }
