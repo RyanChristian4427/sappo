@@ -24,5 +24,17 @@ body,
     overflow-y: auto;
     height: 80vh;
     background: $theme-charleston-green;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+
+    .messages {
+      flex-grow: 1;
+    }
+
+    input {
+      border-bottom-left-radius: 20px;
+      flex-shrink: 0;
+    }
   }
 }

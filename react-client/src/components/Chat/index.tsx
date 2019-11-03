@@ -7,7 +7,7 @@ export default class Chat extends React.Component<{}, {}> {
     createFillerData = (): any => {
         const list = [];
 
-        for (let i=0; i<100; i++) {
+        for (let i=0; i<10; i++) {
             list.push(<ChatMessage abundance={5} coordinates="10, 20" datetimestamp={new Date()} message="Hello" species="Spotted Tree Frog" temperature={50} username="Ryan"/>)
         }
         return list
@@ -27,7 +27,10 @@ export default class Chat extends React.Component<{}, {}> {
                     </div>
                 </section>
                 <section className="chat-container is-xanadu-light">
-                    {this.createFillerData()}
+                    <div className="messages">
+                        {this.createFillerData()}
+                    </div>
+                    <input className="input" type="text" placeholder="Text input" />
                 </section>
             </div>
         )
