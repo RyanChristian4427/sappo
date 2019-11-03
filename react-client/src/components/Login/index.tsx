@@ -39,7 +39,7 @@ export default class Login extends React.Component<{}, {}> {
                         </div>
                     </div>
                 </section>
-                <div className="card">
+                <section className="card">
                     <div className="container" id="layered-background">
                         <div className="field">
                             <label className="label">User Name</label>
@@ -53,7 +53,7 @@ export default class Login extends React.Component<{}, {}> {
                             </div>
                         </div>
                     </div>
-                </div>
+                </section>
             </div>
         );
     }

@@ -18,11 +18,11 @@ export default class PageNotFound extends React.Component<{}, {}> {
                         </div>
                     </div>
                 </section>
-                <div className="card">
+                <section className="card">
                     <div className="level" id="layered-background">
                         <Link className="button is-xanadu-dark level-item" to="/chat">Back to Safety</Link>
                     </div>
-                </div>
+                </section>
             </div>
         );
     }

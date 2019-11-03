@@ -1,6 +1,10 @@
 @charset "utf-8";
 @import 'variables';
 
+body {
+  color: $theme-ash-grey !important;
+}
+
 #root {
   background-color: $theme-isabelline;
   min-height: 100vh;

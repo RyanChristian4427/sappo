@@ -8,7 +8,7 @@ export default class Chat extends React.Component<{}, {}> {
         const list = [];
 
         for (let i=0; i<100; i++) {
-            list.push(<ChatMessage/>)
+            list.push(<ChatMessage abundance={5} coordinates="10, 20" datetimestamp={new Date()} message="Hello" species="Spotted Tree Frog" temperature={50} username="Ryan"/>)
         }
         return list
     };
@@ -26,9 +26,9 @@ export default class Chat extends React.Component<{}, {}> {
                         </div>
                     </div>
                 </section>
-                <div className="chat-container is-xanadu-light">
+                <section className="chat-container is-xanadu-light">
                     {this.createFillerData()}
-                </div>
+                </section>
             </div>
         )
     }
