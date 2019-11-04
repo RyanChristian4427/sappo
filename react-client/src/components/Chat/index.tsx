@@ -46,7 +46,8 @@ export default class Chat extends React.Component<{}, IState> {
         const list = [];
 
         for (let i=0; i<12; i++) {
-            list.push(<ChatMessage abundance={5} coordinates="10, 20" datetimestamp={new Date()} message="Hello" species="Spotted Tree Frog" temperature={50} username="Ryan" />)
+            list.push(<ChatMessage abundance={5} coordinates="10, 20" datetimestamp={new Date()} message="Hello"
+                                   species="Spotted Tree Frog" temperature={50} username="Ryan" />)
         }
         return list
     };
