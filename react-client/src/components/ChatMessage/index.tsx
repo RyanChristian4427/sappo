@@ -32,7 +32,7 @@ export default class ChatMessage extends React.Component<MessageProps, {}> {
         return sixMonthsAgo > emailDate && today.getFullYear() !== emailDate.getFullYear()
             ? months[emailDate.getMonth()] + ' ' + emailDate.getUTCDate() + ' ' + emailDate.getFullYear()
             : today.getTime() - emailDate.getTime() < dayInMillis
-                ? this.twentyFourHourToTwelve(emailDate.getHours()) + ':' + emailDate.getMinutes()
+                ? this.twentyFourHourToTwelve(emailDate.getHours()) + ':' + (emailDate.getMinutes()).toString().padStart(2, '0')
                 : months[emailDate.getMonth()] + ' ' + emailDate.getUTCDate();
     }
 
@@ -49,11 +49,33 @@ export default class ChatMessage extends React.Component<MessageProps, {}> {
                 <div className="container">
                     <h6>{this.displayTimeStamp(date)}</h6>
                     <div className="level">
-                        <h1 className="level-item is-size-5">{this.props.username}</h1>
+                        <div className="level-right">
+                            <h1 className="level-item is-size-5">{this.props.username}: </h1>
+                        </div>
                         <h2 className="level-item is-size-5">{this.props.message}</h2>
+                    </div>
+                    <div className="level">
+                        <div className="level-right">
+                            <h2 className="level-item is-size-5">Abundance: </h2>
+                        </div>
                         <h2 className="level-item is-size-5">{this.props.abundance}</h2>
+                    </div>
+                    <div className="level">
+                        <div className="level-right">
+                            <h2 className="level-item is-size-5">Species: </h2>
+                        </div>
                         <h2 className="level-item is-size-5">{this.props.species}</h2>
-                        <h2 className="level-item is-size-5">{this.props.coordinates}</h2>
+                    </div>
+                    <div className="level">
+                        <div className="level-right">
+                            <h2 className="level-item is-size-5">Coordinates: </h2>
+                        </div>
+                        <h2 className="level-item is-size-5">({this.props.coordinates})</h2>
+                    </div>
+                    <div className="level">
+                        <div className="level-right">
+                            <h2 className="level-item is-size-5">Temperature: </h2>
+                        </div>
                         <h2 className="level-item is-size-5">{this.props.temperature}</h2>
                     </div>
                 </div>

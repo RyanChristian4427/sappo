@@ -10,9 +10,11 @@
     padding: 6px;
   }
 
-  h2 {
-    color: $theme-isabelline;
+  h1, h2 {
     margin-left: 6px;
   }
 
+  h2 {
+    color: $theme-isabelline;
+  }
 }
