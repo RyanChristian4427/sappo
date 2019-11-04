@@ -14,10 +14,10 @@ export default class App extends React.Component<{}, {}> {
     return (
         <BrowserRouter>
           <Switch>
-            <Route path="/chat">
+            <Route exact path="/">
               <Chat />
             </Route>
-            <Route exact path="/">
+            <Route path="/login">
               <Login />
             </Route>
             <Route path="/*">

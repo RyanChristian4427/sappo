@@ -4,6 +4,7 @@ import ChatMessage from 'src/components/ChatMessage';
 import {inject, observer} from 'mobx-react';
 import {AuthStore} from '../../stores/modules/authStore';
 import logo from '../../assets/logo.jpg';
+import socketIOClient from "socket.io-client";
 
 interface InjectedProps {
     authStore: AuthStore;
@@ -29,12 +30,17 @@ export default class Chat extends React.Component<{}, IState> {
             showModal: false,
             message: '',
             username: '',
-        }
+        };
+        this.socket.on('new_user_join', (newUser: string) => {
+            console.log(newUser);
+        });
     }
 
     public get injectedProps(): InjectedProps {
         return this.props as InjectedProps;
     }
+
+    private socket = socketIOClient.connect('');
 
     private createFillerData = (): React.ReactNode => {
         const list = [];
@@ -117,6 +123,7 @@ export default class Chat extends React.Component<{}, IState> {
     private setUsername = (): void => {
         this.injectedProps.authStore.setUsername(this.state.username);
         this.closeModal();
+        this.socket.emit('change_username', {username: this.state.username});
     };
 
     private handleChange = (field: Fields) => (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -130,10 +137,7 @@ export default class Chat extends React.Component<{}, IState> {
     private handleSubmitForm = (e: React.FormEvent<HTMLButtonElement>): void => {
         e.preventDefault();
         if (this.injectedProps.authStore.currentUser.Username === '') {
-            console.log('No user name');
             this.setState({ showModal: true });
-        } else {
-            console.log(this.injectedProps.authStore.currentUser.Username);
         }
     }
 }

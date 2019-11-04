@@ -24,15 +24,11 @@ const server = app.listen(app.get('port'), () => {
 //     username: string;
 // }
 
-const io = socketIo(server);
+const io: any = socketIo(server);
 io.on('connection', (socket: any) => {
-    console.log('New User connected!');
-    socket.username = 'Anonymous';
-    console.log(socket.username);
-
     socket.on('change_username', (newName: string) => {
-        socket.username = newName;
-        console.log(socket.username);
+        io.username = newName;
+        io.emit('new_user_join', {newUserName: newName});
     });
 });
 
