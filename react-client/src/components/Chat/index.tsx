@@ -1,10 +1,12 @@
 import React from 'react';
 import './Chat.scss';
+
 import ChatMessage from 'src/components/ChatMessage';
+import UsernameModal from 'src/components/UserModal'
 import {inject, observer} from 'mobx-react';
 import {AuthStore} from '../../stores/modules/authStore';
 import logo from '../../assets/logo.jpg';
-import socketIOClient from "socket.io-client";
+import socket from 'src/models/Sockets';
 
 interface InjectedProps {
     authStore: AuthStore;
@@ -13,12 +15,6 @@ interface InjectedProps {
 interface IState {
     showModal: boolean;
     message: string;
-    username: string;
-}
-
-enum Fields {
-    username = 'username',
-    message = 'message',
 }
 
 @inject('authStore')
@@ -29,9 +25,8 @@ export default class Chat extends React.Component<{}, IState> {
         this.state = {
             showModal: false,
             message: '',
-            username: '',
         };
-        this.socket.on('new_user_join', (newUser: string) => {
+        socket.on('new_user_join', (newUser: string) => {
             console.log(newUser);
         });
     }
@@ -39,8 +34,6 @@ export default class Chat extends React.Component<{}, IState> {
     public get injectedProps(): InjectedProps {
         return this.props as InjectedProps;
     }
-
-    private socket = socketIOClient.connect('');
 
     private createFillerData = (): React.ReactNode => {
         const list = [];
@@ -57,26 +50,11 @@ export default class Chat extends React.Component<{}, IState> {
     };
 
     render(): React.ReactNode {
-        const usernameModal = (!this.state.showModal)
-            ? null
-            : <div className="modal is-active is-clipped">
-                <div className="modal-background" onClick={this.closeModal} />
-                <div className="modal-card">
-                    <header className="modal-card-head">
-                        <p className="modal-card-title">Please Choose a User Name</p>
-                    </header>
-                    <section className="modal-card-body">
-                        <input className="input" type="text" placeholder="Your User Name" onChange={this.handleChange(Fields.username)} />
-                    </section>
-                    <footer className="modal-card-foot">
-                        <button className="button" onClick={this.closeModal}>Cancel</button>
-                        <button className="button is-success" onClick={this.setUsername}>Save changes</button>
-                    </footer>
-                </div>
-            </div>;
 
-        const currentlyLoggedInAs = (this.injectedProps.authStore.currentUser.Username)
-            ? <h2 className="subtitle">Currently logged in as: {this.injectedProps.authStore.currentUser.Username}</h2>
+        const { currentUser } = this.injectedProps.authStore;
+
+        const currentlyLoggedInAs = (currentUser.Username !== '')
+            ? <h2 className="subtitle">Currently logged in as: {currentUser.Username}</h2>
             : null;
 
         return (
@@ -101,14 +79,14 @@ export default class Chat extends React.Component<{}, IState> {
                         </div>
                     </div>
                 </section>
-                {usernameModal}
+                <UsernameModal authStore={this.injectedProps.authStore}  closeModal={this.closeModal}  show={this.state.showModal}/>
                 <section className="chat-container is-xanadu-light">
                     <div className="messages">
                         {this.createFillerData()}
                     </div>
                     <div className="field has-addons">
                         <div className="control is-expanded">
-                            <input className="input" type="text" placeholder="Send Text Message" onChange={this.handleChange(Fields.message)} />
+                            <input className="input" type="text" placeholder="Send Text Message" onChange={this.handleChange} />
                         </div>
                         <div className="control">
                             <button className="button is-xanadu-light" onClick={this.handleSubmitForm}>
@@ -121,18 +99,8 @@ export default class Chat extends React.Component<{}, IState> {
         )
     }
 
-    private setUsername = (): void => {
-        this.injectedProps.authStore.setUsername(this.state.username);
-        this.closeModal();
-        this.socket.emit('change_username', {username: this.state.username});
-    };
-
-    private handleChange = (field: Fields) => (event: React.ChangeEvent<HTMLInputElement>): void => {
-        if (field === Fields.username || field === Fields.message) {
-            // @ts-ignore
-            // Have to ts ignore here, as it can't detect that I guarantee [field] is indeed a string type and is in `state`
-            this.setState({ [field]: event.target.value });
-        }
+    private handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+        this.setState({ message: event.target.value });
     };
 
     private handleSubmitForm = (e: React.FormEvent<HTMLButtonElement>): void => {

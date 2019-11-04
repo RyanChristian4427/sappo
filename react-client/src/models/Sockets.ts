@@ -1,5 +1,5 @@
-class Sockets {
+import socketIOClient from 'socket.io-client';
 
-}
+const socket = socketIOClient.connect('');
 
-export default new Sockets();
+export default socket;
