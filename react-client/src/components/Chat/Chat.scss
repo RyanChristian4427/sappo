@@ -37,6 +37,10 @@ body,
       flex-grow: 1;
     }
 
+    #details-button {
+      border-right: 2px solid $theme-deep-space-sparkle;
+    }
+
     input {
       border-bottom-left-radius: 20px;
       flex-shrink: 0;
