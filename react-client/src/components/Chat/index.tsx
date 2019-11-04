@@ -3,6 +3,7 @@ import './Chat.scss';
 import ChatMessage from 'src/components/ChatMessage';
 import {inject, observer} from 'mobx-react';
 import {AuthStore} from '../../stores/modules/authStore';
+import logo from '../../assets/logo.jpg';
 
 interface InjectedProps {
     authStore: AuthStore;
@@ -15,7 +16,6 @@ interface IState {
 }
 
 enum Fields {
-    
     username = 'username',
     message = 'message',
 }
@@ -23,7 +23,6 @@ enum Fields {
 @inject('authStore')
 @observer
 export default class Chat extends React.Component<{}, IState> {
-
     constructor(props: {}) {
         super(props);
         this.state = {
@@ -69,14 +68,29 @@ export default class Chat extends React.Component<{}, IState> {
                 </div>
             </div>;
 
+        const currentlyLoggedInAs = (this.injectedProps.authStore.currentUser.Username)
+            ? <h2 className="subtitle">Currently logged in as: {this.injectedProps.authStore.currentUser.Username}</h2>
+            : null;
+
         return (
             <div className="chat-page">
                 <section className="hero is-xanadu-light is-bold is-small">
                     <div className="hero-body">
-                        <div className="container">
-                            <h1 className="title">
-                                Sappo
-                            </h1>
+                        <div className="navbar">
+                            <div className="container">
+                                <div className="navbar-brand">
+                                    <img className="navbar-item" src={logo} alt="Sappo logo"/>
+                                </div>
+                                <div className="navbar-content">
+                                    <h1 className="title">
+                                        Sappo
+                                    </h1>
+                                    {currentlyLoggedInAs}
+                                </div>
+                                <div className="navbar-end">
+                                    <button className="button is-charleston-green-dark" onClick={this.handleSubmitForm}>Pick User Name</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -91,7 +105,7 @@ export default class Chat extends React.Component<{}, IState> {
                         </div>
                         <div className="control">
                             <button className="button is-xanadu-light" onClick={this.handleSubmitForm}>
-                                Search
+                                Send
                             </button>
                         </div>
                     </div>
@@ -106,7 +120,7 @@ export default class Chat extends React.Component<{}, IState> {
     };
 
     private handleChange = (field: Fields) => (event: React.ChangeEvent<HTMLInputElement>): void => {
-        if (field == Fields.username || field == Fields.message) {
+        if (field === Fields.username || field === Fields.message) {
             // @ts-ignore
             // Have to ts ignore here, as it can't detect that I guarantee [field] is indeed a string type and is in `state`
             this.setState({ [field]: event.target.value });
