@@ -54,30 +54,31 @@ export default class ChatMessage extends React.Component<MessageProps, {}> {
                         </div>
                         <h2 className="level-item is-size-5">{this.props.message}</h2>
                     </div>
-                    <div className="level">
-                        <div className="level-right">
-                            <h2 className="level-item is-size-5">Abundance: </h2>
-                        </div>
-                        <h2 className="level-item is-size-5">{this.props.abundance}</h2>
-                    </div>
-                    <div className="level">
-                        <div className="level-right">
-                            <h2 className="level-item is-size-5">Species: </h2>
-                        </div>
-                        <h2 className="level-item is-size-5">{this.props.species}</h2>
-                    </div>
-                    <div className="level">
-                        <div className="level-right">
-                            <h2 className="level-item is-size-5">Coordinates: </h2>
-                        </div>
-                        <h2 className="level-item is-size-5">({this.props.coordinates})</h2>
-                    </div>
-                    <div className="level">
-                        <div className="level-right">
-                            <h2 className="level-item is-size-5">Temperature: </h2>
-                        </div>
-                        <h2 className="level-item is-size-5">{this.props.temperature}</h2>
-                    </div>
+                    {/* TODO this is quite ugly and needs fixing */}
+                    {/*<div className="level">*/}
+                    {/*    <div className="level-right">*/}
+                    {/*        <h2 className="level-item is-size-5">Abundance: </h2>*/}
+                    {/*    </div>*/}
+                    {/*    <h2 className="level-item is-size-5">{this.props.abundance}</h2>*/}
+                    {/*</div>*/}
+                    {/*<div className="level">*/}
+                    {/*    <div className="level-right">*/}
+                    {/*        <h2 className="level-item is-size-5">Species: </h2>*/}
+                    {/*    </div>*/}
+                    {/*    <h2 className="level-item is-size-5">{this.props.species}</h2>*/}
+                    {/*</div>*/}
+                    {/*<div className="level">*/}
+                    {/*    <div className="level-right">*/}
+                    {/*        <h2 className="level-item is-size-5">Coordinates: </h2>*/}
+                    {/*    </div>*/}
+                    {/*    <h2 className="level-item is-size-5">({this.props.coordinates})</h2>*/}
+                    {/*</div>*/}
+                    {/*<div className="level">*/}
+                    {/*    <div className="level-right">*/}
+                    {/*        <h2 className="level-item is-size-5">Temperature: </h2>*/}
+                    {/*    </div>*/}
+                    {/*    <h2 className="level-item is-size-5">{this.props.temperature}</h2>*/}
+                    {/*</div>*/}
                 </div>
             </div>
         )

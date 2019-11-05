@@ -15,7 +15,7 @@ export class MessageStore {
 
     @observable message = this.baseMessage;
 
-    @action setAdditionalDetails(details: {abundance: number, coordinates: string, species: string, temperature: number}): void {
+    @action setAdditionalDetails(details: {abundance: number; coordinates: string; species: string; temperature: number}): void {
         this.message.abundance = details.abundance;
         this.message.coordinates = details.coordinates;
         this.message.species = details.species;

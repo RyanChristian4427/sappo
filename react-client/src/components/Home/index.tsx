@@ -86,7 +86,7 @@ export default class Chat extends React.Component<{}, IState> {
                     </div>
                     <div className="field has-addons">
                         <div className="control is-expanded">
-                            <input className="input" type="text" placeholder="Send Text Message" onChange={this.handleChange} />
+                            <input className="input" type="text" placeholder="Send Text Message" onChange={this.handleChange} value={this.state.message} />
                         </div>
                         <div className="control">
                             <button className="button is-xanadu-light" id="details-button" onClick={this.handleDetailsMenu}>Add Details</button>
@@ -110,6 +110,7 @@ export default class Chat extends React.Component<{}, IState> {
             this.setState({ showUserModal: true });
         } else if (this.state.message !== '') {
             this.injectedProps.messageStore.sendMessage(this.state.message);
+            this.setState({ message: '' })
         }
     };
 
