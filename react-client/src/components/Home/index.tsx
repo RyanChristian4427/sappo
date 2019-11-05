@@ -1,7 +1,7 @@
 import React from 'react';
 import {inject, observer} from 'mobx-react';
 
-import logo from 'src/assets/logo.jpg';
+import logo from 'src/assets/logo.png';
 import ChatMessage from 'src/components/ChatMessage';
 import Modal from 'src/components/Modal';
 import socket from 'src/models/Sockets';
@@ -78,7 +78,7 @@ export default class Chat extends React.Component<{}, IState> {
                                     {currentlyLoggedInAs}
                                 </div>
                                 <div className="navbar-end">
-                                    <button className="button is-charleston-green-dark" onClick={this.handleSubmitForm}>Pick User Name</button>
+                                    <button className="button is-charleston-green-dark" onClick={this.handleSetName}>Pick User Name</button>
                                 </div>
                             </div>
                         </div>
@@ -107,6 +107,10 @@ export default class Chat extends React.Component<{}, IState> {
 
     private handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
         this.setState({ message: event.target.value });
+    };
+
+    private handleSetName = (): void => {
+        this.setState({ showUserModal: true });
     };
 
     private handleSubmitForm = (e: React.FormEvent<HTMLButtonElement>): void => {
