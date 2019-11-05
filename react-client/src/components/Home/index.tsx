@@ -1,13 +1,14 @@
 import React from 'react';
 import {inject, observer} from 'mobx-react';
-import './Home.scss';
 
+import logo from 'src/assets/logo.jpg';
 import ChatMessage from 'src/components/ChatMessage';
 import Modal from 'src/components/Modal'
+import socket from 'src/models/Sockets';
 import {AuthStore} from 'src/stores/modules/authStore';
 import {MessageStore} from 'src/stores/modules/messageStore';
-import logo from 'src/assets/logo.jpg';
-import socket from 'src/models/Sockets';
+
+import './Home.scss';
 
 interface InjectedProps {
     authStore: AuthStore;

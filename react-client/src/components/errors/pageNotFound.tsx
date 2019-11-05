@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+
 import './Error.scss'
 
 export default class PageNotFound extends React.Component<{}, {}> {
@@ -20,7 +21,7 @@ export default class PageNotFound extends React.Component<{}, {}> {
                 </section>
                 <section className="card">
                     <div className="level" id="layered-background">
-                        <Link className="button is-xanadu-dark level-item" to="/chat">Back to Safety</Link>
+                        <Link className="button is-xanadu-dark level-item" to="/">Back to Safety</Link>
                     </div>
                 </section>
             </div>
