@@ -12,7 +12,7 @@ interface IProps {
 
 interface IState {
     abundance: number;
-    coordinates: string;
+    coordinates: [number, number];
     species: string;
     temperature: number;
     username: string;
@@ -32,7 +32,7 @@ export default class Modal extends React.Component<IProps, IState> {
         super(props);
         this.state = {
             abundance: 0,
-            coordinates: '(0,0)',
+            coordinates: [0, 0],
             species: '',
             temperature: 0,
             username: '',
@@ -46,14 +46,16 @@ export default class Modal extends React.Component<IProps, IState> {
         // Uses the injected store type to decide what type of modal should be displayed
         const title = (this.props.store instanceof AuthStore)
             ? 'Please Choose a User Name'
-            : 'Please Enter the Details';
+            : 'Please Enter Any Other Details You May Have';
 
         const content = (this.props.store instanceof AuthStore)
             ? <input className="input" type="text" placeholder="Your User Name" onChange={this.handleChange(DataFields.username)} />
             : <React.Fragment>
                 <input className="input" type="text" placeholder="Abundance" onChange={this.handleChange(DataFields.abundance)} />
                 <input className="input" type="text" placeholder="Species" onChange={this.handleChange(DataFields.species)} />
-                <input className="input" type="text" placeholder="Coordinates" onChange={this.handleChange(DataFields.coordinates)} />
+                <div className="has-text-centered">
+                    <button className="button is-xanadu-light" onClick={this.currentLocation}>Attach Current Coordinates</button>
+                </div>
                 <input className="input" type="text" placeholder="Temperature" onChange={this.handleChange(DataFields.temperature)} />
             </React.Fragment>;
 
@@ -73,7 +75,7 @@ export default class Modal extends React.Component<IProps, IState> {
                     </footer>
                 </div>
             </div>
-        )
+        );
     }
 
     // Uses dataFields as an enum to decide which input actually needs to be updated. Got this idea from a project I did in Rust,
@@ -86,6 +88,17 @@ export default class Modal extends React.Component<IProps, IState> {
             this.setState({[field]: event.target.value});
         }
     };
+
+    private currentLocation = (): void  => {
+        const setLocation = (latitude: number, longitude: number): void => {
+            this.setState({ coordinates: [latitude, longitude] });
+        };
+
+        navigator.geolocation.getCurrentPosition(function(position) {
+            setLocation(position.coords.latitude, position.coords.longitude);
+        });
+    };
+
 
     private handleSave = (): void => {
         if (this.props.store instanceof AuthStore) {

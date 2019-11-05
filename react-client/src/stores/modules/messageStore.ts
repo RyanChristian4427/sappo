@@ -1,5 +1,5 @@
 import { observable, action } from 'mobx';
-import { Message } from '../types/messageTypes';
+import {AdditionalDetails, Message} from '../types/messageTypes';
 import { apiService } from 'ts-api-toolkit';
 import authStore from './authStore';
 
@@ -8,14 +8,14 @@ export class MessageStore {
         message: '',
         username: '',
         abundance: 0,
-        coordinates: '(0,0)',
+        coordinates: [0, 0],
         species: '',
         temperature: 0,
     };
 
     @observable message = this.baseMessage;
 
-    @action setAdditionalDetails(details: {abundance: number; coordinates: string; species: string; temperature: number}): void {
+    @action setAdditionalDetails(details: AdditionalDetails): void {
         this.message.abundance = details.abundance;
         this.message.coordinates = details.coordinates;
         this.message.species = details.species;

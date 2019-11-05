@@ -43,7 +43,7 @@ export default class Chat extends React.Component<{}, IState> {
     private createFillerData = (): React.ReactNode => {
         const messages = [];
         for (let i=0; i<4; i++) {
-            messages.push(<ChatMessage abundance={5} coordinates="10, 20" datetimestamp={new Date()} message="Hello"
+            messages.push(<ChatMessage key={i} abundance={5} coordinates="10, 20" datetimestamp={new Date()} message="Hello"
                                    species="Spotted Tree Frog" temperature={50} username="Ryan" />);
         }
         return messages;
