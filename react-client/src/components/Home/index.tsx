@@ -1,13 +1,12 @@
 import React from 'react';
+import {inject, observer} from 'mobx-react';
 import './Home.scss';
 
 import ChatMessage from 'src/components/ChatMessage';
-import UsernameModal from 'src/components/UserModal'
-import DataModal from '../DataModal';
-import {inject, observer} from 'mobx-react';
-import {AuthStore} from '../../stores/modules/authStore';
-import {MessageStore} from '../../stores/modules/messageStore';
-import logo from '../../assets/logo.jpg';
+import Modal from 'src/components/Modal'
+import {AuthStore} from 'src/stores/modules/authStore';
+import {MessageStore} from 'src/stores/modules/messageStore';
+import logo from 'src/assets/logo.jpg';
 import socket from 'src/models/Sockets';
 
 interface InjectedProps {
@@ -56,6 +55,12 @@ export default class Chat extends React.Component<{}, IState> {
             ? <h2 className="subtitle">Currently logged in as: {currentUser.Username}</h2>
             : null;
 
+        const modal = (this.state.showUserModal)
+            ? <Modal closeModal={this.closeModal} store={this.injectedProps.authStore} />
+            : (this.state.showDataModal)
+                ? <Modal closeModal={this.closeModal} store={this.injectedProps.messageStore} />
+                : null;
+
         return (
             <div className="chat-page">
                 <section className="hero is-xanadu-light is-bold is-small">
@@ -78,8 +83,7 @@ export default class Chat extends React.Component<{}, IState> {
                         </div>
                     </div>
                 </section>
-                <UsernameModal authStore={this.injectedProps.authStore} closeModal={this.closeModal}  show={this.state.showUserModal}/>
-                <DataModal messageStore={this.injectedProps.messageStore} closeModal={this.closeModal} show={this.state.showDataModal}/>
+                {modal}
                 <section className="chat-container is-xanadu-light">
                     <div className="messages">
                         {this.createFillerData()}
