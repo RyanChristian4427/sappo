@@ -5,5 +5,5 @@ export function createStores(): {} {
     return {
         authStore,
         messageStore,
-    }
+    };
 }

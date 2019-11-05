@@ -3,7 +3,7 @@ import {inject, observer} from 'mobx-react';
 
 import logo from 'src/assets/logo.jpg';
 import ChatMessage from 'src/components/ChatMessage';
-import Modal from 'src/components/Modal'
+import Modal from 'src/components/Modal';
 import socket from 'src/models/Sockets';
 import {AuthStore} from 'src/stores/modules/authStore';
 import {MessageStore} from 'src/stores/modules/messageStore';
@@ -44,9 +44,9 @@ export default class Chat extends React.Component<{}, IState> {
         const messages = [];
         for (let i=0; i<4; i++) {
             messages.push(<ChatMessage abundance={5} coordinates="10, 20" datetimestamp={new Date()} message="Hello"
-                                   species="Spotted Tree Frog" temperature={50} username="Ryan" />)
+                                   species="Spotted Tree Frog" temperature={50} username="Ryan" />);
         }
-        return messages
+        return messages;
     };
 
     render(): React.ReactNode {
@@ -102,7 +102,7 @@ export default class Chat extends React.Component<{}, IState> {
                     </div>
                 </section>
             </div>
-        )
+        );
     }
 
     private handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -115,7 +115,7 @@ export default class Chat extends React.Component<{}, IState> {
             this.setState({ showUserModal: true });
         } else if (this.state.message !== '') {
             this.injectedProps.messageStore.sendMessage(this.state.message);
-            this.setState({ message: '' })
+            this.setState({ message: '' });
         }
     };
 

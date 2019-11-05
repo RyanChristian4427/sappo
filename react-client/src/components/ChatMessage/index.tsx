@@ -82,6 +82,6 @@ export default class ChatMessage extends React.Component<MessageProps, {}> {
                     {/*</div>*/}
                 </div>
             </div>
-        )
+        );
     }
 }

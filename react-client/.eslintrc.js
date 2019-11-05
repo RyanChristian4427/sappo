@@ -20,5 +20,7 @@ module.exports =  {
         "arrow-parens": "warn",
         "@typescript-eslint/ban-ts-ignore": ["warn"],
         "@typescript-eslint/interface-name-prefix": "off",
+        "semi": "off",
+        "@typescript-eslint/semi": ["warn"]
     },
 };
