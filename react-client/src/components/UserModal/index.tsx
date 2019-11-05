@@ -13,7 +13,6 @@ interface IState {
 }
 
 export default class UsernameModal extends React.Component<IProps, IState> {
-
     constructor(props: IProps){
         super(props);
         this.state = {

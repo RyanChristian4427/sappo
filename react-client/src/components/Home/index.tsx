@@ -1,16 +1,18 @@
 import React from 'react';
-import './Chat.scss';
+import './Home.scss';
 
 import ChatMessage from 'src/components/ChatMessage';
 import UsernameModal from 'src/components/UserModal'
-import DataModal from "../DataModal";
+import DataModal from '../DataModal';
 import {inject, observer} from 'mobx-react';
 import {AuthStore} from '../../stores/modules/authStore';
+import {MessageStore} from '../../stores/modules/messageStore';
 import logo from '../../assets/logo.jpg';
 import socket from 'src/models/Sockets';
 
 interface InjectedProps {
     authStore: AuthStore;
+    messageStore: MessageStore;
 }
 
 interface IState {
@@ -19,7 +21,7 @@ interface IState {
     message: string;
 }
 
-@inject('authStore')
+@inject('authStore', 'messageStore')
 @observer
 export default class Chat extends React.Component<{}, IState> {
     constructor(props: {}) {
@@ -39,13 +41,12 @@ export default class Chat extends React.Component<{}, IState> {
     }
 
     private createFillerData = (): React.ReactNode => {
-        const list = [];
-
+        const messages = [];
         for (let i=0; i<4; i++) {
-            list.push(<ChatMessage abundance={5} coordinates="10, 20" datetimestamp={new Date()} message="Hello"
+            messages.push(<ChatMessage abundance={5} coordinates="10, 20" datetimestamp={new Date()} message="Hello"
                                    species="Spotted Tree Frog" temperature={50} username="Ryan" />)
         }
-        return list
+        return messages
     };
 
     render(): React.ReactNode {
@@ -77,8 +78,8 @@ export default class Chat extends React.Component<{}, IState> {
                         </div>
                     </div>
                 </section>
-                <UsernameModal authStore={this.injectedProps.authStore}  closeModal={this.closeModal}  show={this.state.showUserModal}/>
-                <DataModal show={this.state.showDataModal} closeModal={this.closeModal} />
+                <UsernameModal authStore={this.injectedProps.authStore} closeModal={this.closeModal}  show={this.state.showUserModal}/>
+                <DataModal messageStore={this.injectedProps.messageStore} closeModal={this.closeModal} show={this.state.showDataModal}/>
                 <section className="chat-container is-xanadu-light">
                     <div className="messages">
                         {this.createFillerData()}
@@ -107,6 +108,8 @@ export default class Chat extends React.Component<{}, IState> {
         e.preventDefault();
         if (this.injectedProps.authStore.currentUser.Username === '') {
             this.setState({ showUserModal: true });
+        } else if (this.state.message !== '') {
+            this.injectedProps.messageStore.sendMessage(this.state.message);
         }
     };
 
@@ -116,7 +119,6 @@ export default class Chat extends React.Component<{}, IState> {
     };
 
     public closeModal = (): void => {
-        this.setState({ showUserModal: false });
-        this.setState({ showDataModal: false });
+        this.setState({ showUserModal: false, showDataModal: false });
     };
 }

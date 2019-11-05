@@ -5,8 +5,7 @@ import {
   Switch,
   Route,
 } from 'react-router-dom';
-import Login from './Login';
-import Chat from './Chat';
+import Chat from './Home';
 import PageNotFound from './errors/pageNotFound';
 
 export default class App extends React.Component<{}, {}> {
@@ -16,9 +15,6 @@ export default class App extends React.Component<{}, {}> {
           <Switch>
             <Route exact path="/">
               <Chat />
-            </Route>
-            <Route path="/login">
-              <Login />
             </Route>
             <Route path="/*">
               <PageNotFound />

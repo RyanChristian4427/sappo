@@ -1,8 +1,9 @@
 import React from 'react';
-import {AuthStore} from '../../stores/modules/authStore';
+import {MessageStore} from '../../stores/modules/messageStore';
 import socket from 'src/models/Sockets';
 
 interface IProps {
+    messageStore: MessageStore;
     show: boolean;
     closeModal: () => void;
 }
@@ -52,7 +53,7 @@ export default class DataModal extends React.Component<IProps, IState> {
                         </section>
                         <footer className="modal-card-foot">
                             <button className="button" onClick={this.props.closeModal}>Cancel</button>
-                            <button className="button is-success">Save changes</button>
+                            <button className="button is-success" onClick={this.setDetails}>Save changes</button>
                         </footer>
                     </div>
                 </div>
@@ -67,5 +68,10 @@ export default class DataModal extends React.Component<IProps, IState> {
             // Have to ts ignore here, as it can't detect that I guarantee [field] is indeed a string type and is in `state`
             this.setState({[field]: event.target.value});
         }
+    };
+
+    private setDetails = (): void => {
+        this.props.messageStore.setAdditionalDetails(this.state);
+        this.props.closeModal();
     };
 }
