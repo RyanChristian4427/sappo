@@ -13,14 +13,15 @@ interface IProps {
 interface IState {
     abundance: number;
     coordinates: [number, number];
+    coordinatesAttached: boolean;
     species: string;
     temperature: number;
     username: string;
+    validationError: boolean;
 }
 
 enum DataFields {
     abundance = 'abundance',
-    coordinates = 'coordinates',
     species = 'species',
     temperature = 'temperature',
     username = 'username',
@@ -33,9 +34,11 @@ export default class Modal extends React.Component<IProps, IState> {
         this.state = {
             abundance: 0,
             coordinates: [0, 0],
+            coordinatesAttached: false,
             species: '',
             temperature: 0,
             username: '',
+            validationError: false,
         };
     };
 
@@ -48,16 +51,25 @@ export default class Modal extends React.Component<IProps, IState> {
             ? 'Please Choose a User Name'
             : 'Please Enter Any Other Details You May Have';
 
+        const validationError = (this.state.validationError)
+            ? <h2 style={{color: 'red'}}>The temperature and abundance fields both can only be numbers, or empty</h2>
+            : null;
+
+        const attachCoordinates = (!this.state.coordinatesAttached)
+            ? <button className="button is-xanadu-light" onClick={this.currentLocation}>Attach Current Coordinates</button>
+            : <button className="button is-deep-space-sparkle">Coordinates Successfully Attached!</button>;
+
         const content = (this.props.store instanceof AuthStore)
             ? <input className="input" type="text" placeholder="Your User Name" onChange={this.handleChange(DataFields.username)} />
             : <React.Fragment>
                 <input className="input" type="text" placeholder="Abundance" onChange={this.handleChange(DataFields.abundance)} />
                 <input className="input" type="text" placeholder="Species" onChange={this.handleChange(DataFields.species)} />
                 <div className="has-text-centered">
-                    <button className="button is-xanadu-light" onClick={this.currentLocation}>Attach Current Coordinates</button>
+                    {attachCoordinates}
                 </div>
-                <input className="input" type="text" placeholder="Temperature" onChange={this.handleChange(DataFields.temperature)} />
-            </React.Fragment>;
+                <input className="input" type="text" placeholder="Temperature, i.e.," onChange={this.handleChange(DataFields.temperature)} />
+                {validationError}
+              </React.Fragment>;
 
         return (
             <div className="modal is-active is-clipped">
@@ -81,17 +93,28 @@ export default class Modal extends React.Component<IProps, IState> {
     // Uses dataFields as an enum to decide which input actually needs to be updated. Got this idea from a project I did in Rust,
     // where you're forced to use enums if you want options like this.
     private handleChange = (field: DataFields) => (event: React.ChangeEvent<HTMLInputElement>): void => {
-        if (field === DataFields.abundance || field === DataFields.coordinates || field === DataFields.species ||
+        if (field === DataFields.abundance || field === DataFields.species ||
             field === DataFields.temperature || field === DataFields.username) {
-            // @ts-ignore
-            // Have to ignore, as even with proper type checking, TS compiler isn't sure that a field from outside the state won't be used
-            this.setState({[field]: event.target.value});
+            if (field === DataFields.abundance || field === DataFields.temperature) {
+                const reg = new RegExp('^$|^[0-9]+$');
+                if (!reg.test(event.target.value)) {
+                    this.setState({ validationError: true });
+                } else {
+                    // @ts-ignore
+                    // Have to ignore, as even with proper type checking, TS compiler isn't sure that a field from outside the state won't be used
+                    this.setState({[field]: event.target.value, validationError: false});
+                }
+            } else {
+                // @ts-ignore
+                // Have to ignore, as even with proper type checking, TS compiler isn't sure that a field from outside the state won't be used
+                this.setState({[field]: event.target.value});
+            }
         }
     };
 
     private currentLocation = (): void  => {
         const setLocation = (latitude: number, longitude: number): void => {
-            this.setState({ coordinates: [latitude, longitude] });
+            this.setState({ coordinates: [latitude, longitude], coordinatesAttached: true });
         };
 
         navigator.geolocation.getCurrentPosition(function(position) {
