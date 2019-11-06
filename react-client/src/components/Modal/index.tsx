@@ -1,7 +1,7 @@
 import React from 'react';
 import {inject} from 'mobx-react';
 
-import {ModalType} from 'src/models/Modal';
+import {AdditionalDetails, BaseDetails, ModalType} from 'src/models/Modal';
 import {AuthStore} from 'src/stores/modules/authStore';
 import {MessageStore} from 'src/stores/modules/messageStore';
 
@@ -24,11 +24,8 @@ interface InjectedProps {
 }
 
 interface IState {
-    abundance: number;
-    coordinates: [number, number];
     coordinatesAttached: boolean;
-    species: string;
-    temperature: number;
+    details: AdditionalDetails;
     username: string;
     validationError: boolean;
 }
@@ -45,11 +42,8 @@ export default class Modal extends React.Component<IProps, IState> {
     constructor(props: IProps){
         super(props);
         this.state = {
-            abundance: 0,
-            coordinates: [0, 0],
             coordinatesAttached: false,
-            species: '',
-            temperature: 0,
+            details: BaseDetails,
             username: '',
             validationError: false,
         };
@@ -69,7 +63,7 @@ export default class Modal extends React.Component<IProps, IState> {
             : 'Please Enter Any Other Details You May Have';
 
         const validationError = (this.state.validationError)
-            ? <h2 style={{color: 'red'}}>The temperature and abundance fields both can only be numbers, or empty</h2>
+            ? <h2 className="error">The temperature and abundance fields both can only be numbers, or empty</h2>
             : null;
 
         const attachCoordinates = (!this.state.coordinatesAttached)
@@ -110,24 +104,28 @@ export default class Modal extends React.Component<IProps, IState> {
     // Uses dataFields as an enum to decide which input actually needs to be updated. Got this idea from a project I did in Rust,
     // where you're forced to use enums if you want options like this.
     private handleChange = (field: DataFields) => (event: React.ChangeEvent<HTMLInputElement>): void => {
+        const details = {...this.state.details};
         if (field === DataFields.abundance || field === DataFields.temperature) {
             const reg = new RegExp('^$|^[0-9]+$');
             if (!reg.test(event.target.value)) {
                 this.setState({ validationError: true });
             } else {
-                // @ts-ignore
-                // Have to ignore, as even with proper type checking, TS compiler isn't sure that a field from outside the state won't be used
-                this.setState({[field]: event.target.value, validationError: false});
+                details[field] = Number(event.target.value);
+                this.setState({details, validationError: false});
             }
-        } else if (field === DataFields.species || field === DataFields.username){
-            // @ts-ignore
-            this.setState({[field]: event.target.value});
+        } else if (field === DataFields.species){
+            details.species = event.target.value;
+            this.setState({details});
+        } else if (field === DataFields.username) {
+            this.setState({ username: event.target.value });
         }
     };
 
     private currentLocation = (): void  => {
         const setLocation = (latitude: number, longitude: number): void => {
-            this.setState({ coordinates: [latitude, longitude], coordinatesAttached: true });
+            const details = {...this.state.details};
+            details.coordinates = [latitude, longitude];
+            this.setState({ details, coordinatesAttached: true });
         };
 
         navigator.geolocation.getCurrentPosition(function(position) {
@@ -141,12 +139,7 @@ export default class Modal extends React.Component<IProps, IState> {
             this.injectedProps.authStore.setUsername(this.state.username);
             this.props.closeModal();
         } else {
-            this.injectedProps.messageStore.setAdditionalDetails({
-                abundance: this.state.abundance,
-                coordinates: this.state.coordinates,
-                species: this.state.species,
-                temperature: this.state.temperature,
-            });
+            this.injectedProps.messageStore.setAdditionalDetails(this.state.details);
             this.props.closeModal();
         }
     };

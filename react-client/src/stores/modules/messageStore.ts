@@ -1,19 +1,13 @@
 import { observable, action } from 'mobx';
-import {AdditionalDetails, Message} from '../types/messageTypes';
 import { apiService } from 'ts-api-toolkit';
-import authStore from './authStore';
+
+import {BaseChatMessage} from 'src/models/ChatMessage';
+import {AdditionalDetails} from 'src/models/Modal';
+import authStore from 'src/stores/modules/authStore';
 
 export class MessageStore {
-    private baseMessage: Message = {
-        username: '',
-        text: '',
-        abundance: 0,
-        coordinates: [0, 0],
-        species: '',
-        temperature: 0,
-    };
 
-    @observable message = this.baseMessage;
+    @observable message = BaseChatMessage;
 
     @action setAdditionalDetails(details: AdditionalDetails): void {
         this.message.abundance = details.abundance;
@@ -23,14 +17,15 @@ export class MessageStore {
     }
 
     @action sendMessage(text: string): void {
-        this.message.username = authStore.currentUser.Username;
+        this.message.username = authStore.currentUser;
         this.message.text = text;
+        this.message.datetimestamp = new Date();
         apiService.post('/message', this.message);
         this.clearMessage();
     }
 
     @action clearMessage(): void {
-        this.message = this.baseMessage;
+        this.message = BaseChatMessage;
     }
 }
 

@@ -1,10 +1,10 @@
 import React from 'react';
 import {inject, observer} from 'mobx-react';
 
-import logo from 'src/assets/logo.png';
 import MessageCard from 'src/components/MessageCard';
 import Modal from 'src/components/Modal';
-import {ChatMessage} from 'src/models/ChatMessage';
+import HeroHeader from 'src/components/HeroHeader';
+import {ReturnedChatMessage} from 'src/models/ChatMessage';
 import {ModalType} from 'src/models/Modal';
 import socket from 'src/models/Sockets';
 import {AuthStore} from 'src/stores/modules/authStore';
@@ -22,9 +22,11 @@ interface InjectedProps {
 
 interface IState {
     showUserModal: boolean;
-    showDataModal: boolean;
+    showDetailsModal: boolean;
+    showJoinMessage: boolean;
     text: string;
-    messages: Array<ChatMessage>;
+    messages: Array<ReturnedChatMessage>;
+    newestUser: string;
 }
 
 @inject('authStore', 'messageStore')
@@ -34,79 +36,73 @@ export default class Chat extends React.Component<{}, IState> {
         super(props);
         this.state = {
             showUserModal: false,
-            showDataModal: false,
+            showDetailsModal: false,
+            showJoinMessage: false,
             text: '',
             messages: [],
+            newestUser: '',
         };
         socket.on('new_user_join', (newUser: string) => {
-            console.log(newUser + ' has joined the chat');
+            if (newUser !== this.injectedProps.authStore.currentUser) {
+                this.setState({
+                    newestUser: newUser,
+                    showJoinMessage: true
+                });
+
+                setTimeout(() => {
+                    this.setState({
+                        showJoinMessage: false
+                    });
+                }, 20000);
+            }
         });
 
         // Appends any new messages to the end of a message array
-        socket.on('new_message', (message: ChatMessage) => {
+        socket.on('new_message', (message: ReturnedChatMessage) => {
             this.setState({messages: [...this.state.messages, message ]});
         });
     }
 
-    public get injectedProps(): InjectedProps {
+    private get injectedProps(): InjectedProps {
         return this.props as InjectedProps;
     }
 
-    render(): React.ReactNode {
+    public render(): React.ReactNode {
         const { currentUser } = this.injectedProps.authStore;
-
-        const currentlyLoggedInAs = (currentUser.Username !== '')
-            ? <h2 className="subtitle">Currently logged in as: {currentUser.Username}</h2>
-            : null;
 
         const modal = (this.state.showUserModal)
             ? <Modal closeModal={this.closeModal} type={ModalType.selectUsername} />
-            : (this.state.showDataModal)
+            : (this.state.showDetailsModal)
                 ? <Modal closeModal={this.closeModal} type={ModalType.additionalDetails} />
                 : null;
 
         const messages = (this.state.messages.map((message) => {
             return (
-                <MessageCard key={message.username + message.message} abundance={message.abundance} coordinates={message.coordinates}
-                             datetimestamp={new Date()} message={message.message}
-                             species={message.species} temperature={message.temperature}
-                             username={message.username} currentUser={this.injectedProps.authStore.currentUser.Username} />
+                <MessageCard key={message.username + message.text} message={message} currentUser={currentUser} />
             );
         }));
 
+        const joinMessage = (this.state.showJoinMessage)
+            ? <h2 className="join-message">{this.state.newestUser} has joined the chat</h2>
+            : null;
+
         return (
             <div className="chat-page">
-                <section className="hero is-xanadu-light is-bold is-small">
-                    <div className="hero-body">
-                        <div className="navbar">
-                            <div className="container">
-                                <div className="navbar-brand">
-                                    <img className="navbar-item" src={logo} alt="Sappo logo"/>
-                                </div>
-                                <div className="navbar-content">
-                                    <h1 className="title">
-                                        Sappo
-                                    </h1>
-                                    {currentlyLoggedInAs}
-                                </div>
-                                <div className="navbar-end">
-                                    <button className="button is-charleston-green-dark" onClick={this.handleSetName}>Pick User Name</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+                <HeroHeader currentUser={currentUser} handleUserModal={this.handleUserModal} />
                 {modal}
                 <section className="chat-container is-xanadu-light">
                     <div className="messages">
                        {messages}
+                    </div>
+                    <div>
+                        {joinMessage}
                     </div>
                     <div className="field has-addons">
                         <div className="control is-expanded">
                             <input className="input" type="text" placeholder="Send Text Message" onChange={this.handleChange} value={this.state.text} />
                         </div>
                         <div className="control">
-                            <button className="button is-xanadu-light" id="details-button" onClick={this.handleDetailsMenu}>Add Details</button>
+                            <button className="button is-xanadu-light" id="details-button" onClick={this.handleDetailsModal}>Add Details</button>
                         </div>
                         <div className="control">
                             <button className="button is-xanadu-light" onClick={this.handleSend}>Send</button>
@@ -121,24 +117,24 @@ export default class Chat extends React.Component<{}, IState> {
         this.setState({ text: event.target.value });
     };
 
-    private handleSetName = (): void => {
+    private handleUserModal = (): void => {
         this.setState({ showUserModal: true });
     };
 
+    private handleDetailsModal = (): void => {
+        this.setState({ showDetailsModal: true });
+    };
+
+    public closeModal = (): void => {
+        this.setState({ showUserModal: false, showDetailsModal: false });
+    };
+
     private handleSend = (): void => {
-        if (this.injectedProps.authStore.currentUser.Username === '') {
+        if (this.injectedProps.authStore.currentUser === '') {
             this.setState({ showUserModal: true });
         } else if (this.state.text !== '') {
             this.injectedProps.messageStore.sendMessage(this.state.text);
             this.setState({ text: '' });
         }
-    };
-
-    private handleDetailsMenu = (): void => {
-        this.setState({ showDataModal: true });
-    };
-
-    public closeModal = (): void => {
-        this.setState({ showUserModal: false, showDataModal: false });
     };
 }

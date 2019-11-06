@@ -22,7 +22,7 @@ const server = app.listen(app.get('port'), () => {
 
 const io = socketIo(server);
 io.on('connection', (socket) => {
-    socket.on('change_username', (newName: string) => {
+    socket.on('user_join', (newName: string) => {
         io.emit('new_user_join', newName);
     });
 });

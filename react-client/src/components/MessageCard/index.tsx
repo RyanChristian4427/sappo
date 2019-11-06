@@ -1,15 +1,10 @@
 import React from 'react';
 
 import './MessageCard.scss';
+import {ReturnedChatMessage} from '../../models/ChatMessage';
 
 interface MessageProps {
-    abundance: number;
-    coordinates: [number, number];
-    datetimestamp: Date;
-    message: string;
-    species: string;
-    temperature: number;
-    username: string;
+    message: ReturnedChatMessage;
     currentUser: string;
 }
 
@@ -45,23 +40,23 @@ export default class MessageCard extends React.Component<MessageProps, {}> {
     }
 
     render(): React.ReactNode {
-        const date: string = this.props.datetimestamp.toUTCString();
+        const message = this.props.message;
 
         const messageContent = (): React.ReactNode => {
             return (
                 <div className="container level-item">
-                    <h6>{this.displayTimeStamp(date)}</h6>
+                    <h6>{this.displayTimeStamp(message.datetimestamp)}</h6>
                     <div className="level">
                         <div className="level-right">
-                            <h1 className="level-item is-size-5">{this.props.username}: </h1>
+                            <h1 className="level-item is-size-5">{message.username}: </h1>
                         </div>
-                        <h2 className="level-item is-size-5">{this.props.message}</h2>
+                        <h2 className="level-item is-size-5">{message.text}</h2>
                     </div>
                 </div>
             );
         };
 
-        const alignedContent = (this.props.username !== this.props.currentUser)
+        const alignedContent = (message.username !== this.props.currentUser)
             // TODO It might be my inexperience with the framework, but it seems that without the opposite level item, there is no effect,
             // i.e., all items end up on the left. To fix this, I've just inserted empty elements to make the spacing work. Come back to this later?
             ? <React.Fragment>

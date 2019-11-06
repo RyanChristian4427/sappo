@@ -13,15 +13,6 @@ body,
   flex-flow: column;
   height: 100%;
 
-  .hero {
-    flex: 0 1 auto;
-
-    img {
-      width: 3vw;
-      height: auto;
-    }
-  }
-
   .chat-container {
     margin: 2vh 10vw;
     flex: 1 0 auto;
@@ -35,6 +26,10 @@ body,
 
     .messages {
       flex-grow: 1;
+    }
+
+    .join-message {
+      text-align: center;
     }
 
     #details-button {
