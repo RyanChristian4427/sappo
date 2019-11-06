@@ -20,16 +20,13 @@ const server = app.listen(app.get('port'), () => {
     console.log('  Press CTRL-C to stop\n');
 });
 
-// interface SocketConnection {
-//     username: string;
-// }
-
 const io: any = socketIo(server);
 io.on('connection', (socket: any) => {
     socket.on('change_username', (newName: string) => {
         io.username = newName;
-        io.emit('new_user_join', {newUserName: newName});
+        io.emit('new_user_join', newName);
     });
 });
+app.set('io', io);
 
 export default server;

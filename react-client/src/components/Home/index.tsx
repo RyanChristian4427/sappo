@@ -2,9 +2,11 @@ import React from 'react';
 import {inject, observer} from 'mobx-react';
 
 import logo from 'src/assets/logo.png';
-import ChatMessage from 'src/components/ChatMessage';
+import MessageCard from 'src/components/MessageCard';
 import Modal from 'src/components/Modal';
+import {ChatMessage} from '../../models/ChatMessage';
 import socket from 'src/models/Sockets';
+import User from 'src/models/User';
 import {AuthStore} from 'src/stores/modules/authStore';
 import {MessageStore} from 'src/stores/modules/messageStore';
 
@@ -18,7 +20,8 @@ interface InjectedProps {
 interface IState {
     showUserModal: boolean;
     showDataModal: boolean;
-    message: string;
+    newMessage: string;
+    messages: Array<ChatMessage>;
 }
 
 @inject('authStore', 'messageStore')
@@ -29,25 +32,20 @@ export default class Chat extends React.Component<{}, IState> {
         this.state = {
             showUserModal: false,
             showDataModal: false,
-            message: '',
+            newMessage: '',
+            messages: [],
         };
-        socket.on('new_user_join', (newUser: string) => {
-            console.log(newUser);
+        socket.on('new_user_join', (newUser: User) => {
+            console.log(newUser.Username + ' has joined the chat');
+        });
+        socket.on('new_message', (message: ChatMessage) => {
+            this.setState({messages: [...this.state.messages, message ]});
         });
     }
 
     public get injectedProps(): InjectedProps {
         return this.props as InjectedProps;
     }
-
-    private createFillerData = (): React.ReactNode => {
-        const messages = [];
-        for (let i=0; i<4; i++) {
-            messages.push(<ChatMessage key={i} abundance={5} coordinates="10, 20" datetimestamp={new Date()} message="Hello"
-                                   species="Spotted Tree Frog" temperature={50} username="Ryan" />);
-        }
-        return messages;
-    };
 
     render(): React.ReactNode {
         const { currentUser } = this.injectedProps.authStore;
@@ -61,6 +59,15 @@ export default class Chat extends React.Component<{}, IState> {
             : (this.state.showDataModal)
                 ? <Modal closeModal={this.closeModal} store={this.injectedProps.messageStore} />
                 : null;
+
+        const messages = (this.state.messages.map((message) => {
+            return (
+                <MessageCard key={message.username + message.message} abundance={message.abundance} coordinates={message.coordinates}
+                             datetimestamp={new Date()} message={message.message}
+                             species={message.species} temperature={message.temperature}
+                             username={message.username} />
+            );
+        }));
 
         return (
             <div className="chat-page">
@@ -87,11 +94,11 @@ export default class Chat extends React.Component<{}, IState> {
                 {modal}
                 <section className="chat-container is-xanadu-light">
                     <div className="messages">
-                        {this.createFillerData()}
+                       {messages}
                     </div>
                     <div className="field has-addons">
                         <div className="control is-expanded">
-                            <input className="input" type="text" placeholder="Send Text Message" onChange={this.handleChange} value={this.state.message} />
+                            <input className="input" type="text" placeholder="Send Text Message" onChange={this.handleChange} value={this.state.newMessage} />
                         </div>
                         <div className="control">
                             <button className="button is-xanadu-light" id="details-button" onClick={this.handleDetailsMenu}>Add Details</button>
@@ -106,7 +113,7 @@ export default class Chat extends React.Component<{}, IState> {
     }
 
     private handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-        this.setState({ message: event.target.value });
+        this.setState({ newMessage: event.target.value });
     };
 
     private handleSetName = (): void => {
@@ -116,9 +123,9 @@ export default class Chat extends React.Component<{}, IState> {
     private handleSubmitMessage = (e: React.FormEvent<HTMLButtonElement>): void => {
         if (this.injectedProps.authStore.currentUser.Username === '') {
             this.setState({ showUserModal: true });
-        } else if (this.state.message !== '') {
-            this.injectedProps.messageStore.sendMessage(this.state.message);
-            this.setState({ message: '' });
+        } else if (this.state.newMessage !== '') {
+            this.injectedProps.messageStore.sendMessage(this.state.newMessage);
+            this.setState({ newMessage: '' });
         }
     };
 

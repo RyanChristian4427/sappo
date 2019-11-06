@@ -25,7 +25,7 @@ export class MessageStore {
     @action sendMessage(message: string): void {
         this.message.username = authStore.currentUser.Username;
         this.message.message = message;
-        apiService.post('/message', this.message).then((response) => console.log(response));
+        apiService.post('/message', this.message);
         this.clearMessage();
     }
 

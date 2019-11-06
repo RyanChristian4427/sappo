@@ -1,10 +1,10 @@
 import React from 'react';
 
-import './ChatMessage.scss';
+import './MessageCard.scss';
 
 interface MessageProps {
     abundance: number;
-    coordinates: string;
+    coordinates: [number, number];
     datetimestamp: Date;
     message: string;
     species: string;
@@ -12,7 +12,7 @@ interface MessageProps {
     username: string;
 }
 
-export default class ChatMessage extends React.Component<MessageProps, {}> {
+export default class MessageCard extends React.Component<MessageProps, {}> {
 
     // Taken from another project of mine, a webmail client, where I put quite a bit
     // of thought into how the date should be displayed. Made sense to reuse.

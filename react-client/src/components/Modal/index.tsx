@@ -127,7 +127,7 @@ export default class Modal extends React.Component<IProps, IState> {
         if (this.props.store instanceof AuthStore) {
             this.props.store.setUsername(this.state.username);
             this.props.closeModal();
-            socket.emit('change_username', {username: this.state.username});
+            socket.emit('change_username', {Username: this.state.username});
         } else {
             this.props.store.setAdditionalDetails({
                 abundance: this.state.abundance,

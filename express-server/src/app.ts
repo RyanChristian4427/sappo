@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import path from 'path';
 
 // Controllers (route handlers)
-import * as authController from './controllers/auth';
+import * as messageController from './controllers/messages';
 
 // Create Express server
 const app = express();
@@ -17,13 +17,10 @@ app.use(
     express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 })
 );
 
-const x = 5;
 /**
  * API examples routes.
  */
-if (5 === x) {
-    app.post('/api/v1/users/login', authController.login);
-}
+app.post('/api/v1/message', messageController.newMessage);
 
 
 export default app;
