@@ -65,7 +65,7 @@ export default class Chat extends React.Component<{}, IState> {
                 <MessageCard key={message.username + message.message} abundance={message.abundance} coordinates={message.coordinates}
                              datetimestamp={new Date()} message={message.message}
                              species={message.species} temperature={message.temperature}
-                             username={message.username} />
+                             username={message.username} currentUser={this.injectedProps.authStore.currentUser.Username} />
             );
         }));
 
