@@ -97,7 +97,7 @@ export default class Chat extends React.Component<{}, IState> {
                             <button className="button is-xanadu-light" id="details-button" onClick={this.handleDetailsMenu}>Add Details</button>
                         </div>
                         <div className="control">
-                            <button className="button is-xanadu-light" onClick={this.handleSubmitForm}>Send</button>
+                            <button className="button is-xanadu-light" onClick={this.handleSubmitMessage}>Send</button>
                         </div>
                     </div>
                 </section>
@@ -113,8 +113,7 @@ export default class Chat extends React.Component<{}, IState> {
         this.setState({ showUserModal: true });
     };
 
-    private handleSubmitForm = (e: React.FormEvent<HTMLButtonElement>): void => {
-        e.preventDefault();
+    private handleSubmitMessage = (e: React.FormEvent<HTMLButtonElement>): void => {
         if (this.injectedProps.authStore.currentUser.Username === '') {
             this.setState({ showUserModal: true });
         } else if (this.state.message !== '') {
@@ -123,8 +122,7 @@ export default class Chat extends React.Component<{}, IState> {
         }
     };
 
-    private handleDetailsMenu = (e: React.FormEvent<HTMLButtonElement>): void => {
-        e.preventDefault();
+    private handleDetailsMenu = (): void => {
         this.setState({ showDataModal: true });
     };
 

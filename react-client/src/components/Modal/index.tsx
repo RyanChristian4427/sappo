@@ -67,7 +67,7 @@ export default class Modal extends React.Component<IProps, IState> {
                 <div className="has-text-centered">
                     {attachCoordinates}
                 </div>
-                <input className="input" type="text" placeholder="Temperature, i.e.," onChange={this.handleChange(DataFields.temperature)} />
+                <input className="input" type="text" placeholder="Temperature as Degrees in Celsius" onChange={this.handleChange(DataFields.temperature)} />
                 {validationError}
               </React.Fragment>;
 
