@@ -1,0 +1,11 @@
+version: '3.7'
+
+services:
+  mongo:
+    container_name: 'mongo'
+    image: mvertes/alpine-mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: "sappo_api"
+      MONGO_INITDB_ROOT_PASSWORD: "admin"
+    ports:
+     - "27017:27017"

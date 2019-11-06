@@ -29,3 +29,7 @@ npm run serve
 * [React](https://reactjs.org/) - The web framework used
 * [Typescript](https://www.typescriptlang.org/) - A typed superset of JavaScript
 * [MobX](https://mobx.js.org/README.html) - State management tool
+
+https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0 don't use containers
+
+class based, bad https://github.com/mobxjs/mobx-react/issues/256

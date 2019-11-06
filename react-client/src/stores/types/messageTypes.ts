@@ -1,6 +1,6 @@
 export interface Message {
     username: string;
-    message: string;
+    text: string;
     abundance?: number;
     coordinates?: [number, number];
     species?: string;

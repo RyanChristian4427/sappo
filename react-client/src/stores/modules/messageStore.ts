@@ -5,8 +5,8 @@ import authStore from './authStore';
 
 export class MessageStore {
     private baseMessage: Message = {
-        message: '',
         username: '',
+        text: '',
         abundance: 0,
         coordinates: [0, 0],
         species: '',
@@ -22,9 +22,9 @@ export class MessageStore {
         this.message.temperature = details.temperature;
     }
 
-    @action sendMessage(message: string): void {
+    @action sendMessage(text: string): void {
         this.message.username = authStore.currentUser.Username;
-        this.message.message = message;
+        this.message.text = text;
         apiService.post('/message', this.message);
         this.clearMessage();
     }

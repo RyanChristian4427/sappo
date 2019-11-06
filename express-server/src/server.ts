@@ -20,10 +20,9 @@ const server = app.listen(app.get('port'), () => {
     console.log('  Press CTRL-C to stop\n');
 });
 
-const io: any = socketIo(server);
-io.on('connection', (socket: any) => {
+const io = socketIo(server);
+io.on('connection', (socket) => {
     socket.on('change_username', (newName: string) => {
-        io.username = newName;
         io.emit('new_user_join', newName);
     });
 });

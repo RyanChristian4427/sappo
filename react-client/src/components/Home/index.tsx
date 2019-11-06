@@ -4,14 +4,17 @@ import {inject, observer} from 'mobx-react';
 import logo from 'src/assets/logo.png';
 import MessageCard from 'src/components/MessageCard';
 import Modal from 'src/components/Modal';
-import {ChatMessage} from '../../models/ChatMessage';
+import {ChatMessage} from 'src/models/ChatMessage';
+import {ModalType} from 'src/models/Modal';
 import socket from 'src/models/Sockets';
-import User from 'src/models/User';
 import {AuthStore} from 'src/stores/modules/authStore';
 import {MessageStore} from 'src/stores/modules/messageStore';
 
 import './Home.scss';
 
+// Doing this is not recommended by any means, however, Typescript just fundamentally does not work with
+// mobx's idea of injection. With the introduction of hooks, mobx no longer suggests injection at all.
+// However, I decided to do this to keep the class based system. This turned out to be a poor decision.
 interface InjectedProps {
     authStore: AuthStore;
     messageStore: MessageStore;
@@ -20,7 +23,7 @@ interface InjectedProps {
 interface IState {
     showUserModal: boolean;
     showDataModal: boolean;
-    newMessage: string;
+    text: string;
     messages: Array<ChatMessage>;
 }
 
@@ -32,12 +35,14 @@ export default class Chat extends React.Component<{}, IState> {
         this.state = {
             showUserModal: false,
             showDataModal: false,
-            newMessage: '',
+            text: '',
             messages: [],
         };
-        socket.on('new_user_join', (newUser: User) => {
-            console.log(newUser.Username + ' has joined the chat');
+        socket.on('new_user_join', (newUser: string) => {
+            console.log(newUser + ' has joined the chat');
         });
+
+        // Appends any new messages to the end of a message array
         socket.on('new_message', (message: ChatMessage) => {
             this.setState({messages: [...this.state.messages, message ]});
         });
@@ -55,9 +60,9 @@ export default class Chat extends React.Component<{}, IState> {
             : null;
 
         const modal = (this.state.showUserModal)
-            ? <Modal closeModal={this.closeModal} store={this.injectedProps.authStore} />
+            ? <Modal closeModal={this.closeModal} type={ModalType.selectUsername} />
             : (this.state.showDataModal)
-                ? <Modal closeModal={this.closeModal} store={this.injectedProps.messageStore} />
+                ? <Modal closeModal={this.closeModal} type={ModalType.additionalDetails} />
                 : null;
 
         const messages = (this.state.messages.map((message) => {
@@ -98,13 +103,13 @@ export default class Chat extends React.Component<{}, IState> {
                     </div>
                     <div className="field has-addons">
                         <div className="control is-expanded">
-                            <input className="input" type="text" placeholder="Send Text Message" onChange={this.handleChange} value={this.state.newMessage} />
+                            <input className="input" type="text" placeholder="Send Text Message" onChange={this.handleChange} value={this.state.text} />
                         </div>
                         <div className="control">
                             <button className="button is-xanadu-light" id="details-button" onClick={this.handleDetailsMenu}>Add Details</button>
                         </div>
                         <div className="control">
-                            <button className="button is-xanadu-light" onClick={this.handleSubmitMessage}>Send</button>
+                            <button className="button is-xanadu-light" onClick={this.handleSend}>Send</button>
                         </div>
                     </div>
                 </section>
@@ -113,19 +118,19 @@ export default class Chat extends React.Component<{}, IState> {
     }
 
     private handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-        this.setState({ newMessage: event.target.value });
+        this.setState({ text: event.target.value });
     };
 
     private handleSetName = (): void => {
         this.setState({ showUserModal: true });
     };
 
-    private handleSubmitMessage = (e: React.FormEvent<HTMLButtonElement>): void => {
+    private handleSend = (): void => {
         if (this.injectedProps.authStore.currentUser.Username === '') {
             this.setState({ showUserModal: true });
-        } else if (this.state.newMessage !== '') {
-            this.injectedProps.messageStore.sendMessage(this.state.newMessage);
-            this.setState({ newMessage: '' });
+        } else if (this.state.text !== '') {
+            this.injectedProps.messageStore.sendMessage(this.state.text);
+            this.setState({ text: '' });
         }
     };
 
