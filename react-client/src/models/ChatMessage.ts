@@ -6,6 +6,7 @@ export interface ChatMessage {
     coordinates: [number, number];
     species: string;
     temperature: number;
+    file: string;
 }
 
 export const BaseChatMessage: ChatMessage = {
@@ -16,6 +17,7 @@ export const BaseChatMessage: ChatMessage = {
     coordinates: [0, 0],
     species: '',
     temperature: 0,
+    file: '',
 };
 
 // Json encoding changes Date object into string
@@ -27,4 +29,5 @@ export interface ReturnedChatMessage {
     coordinates: [number, number];
     species: string;
     temperature: number;
+    file: string;
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import {inject} from 'mobx-react';
 
-import {AdditionalDetails, BaseDetails, ModalType} from 'src/models/Modal';
+import {AdditionalDetails, BaseDetails, DataFields, ModalType} from 'src/models/Modal';
 import {AuthStore} from 'src/stores/modules/authStore';
 import {MessageStore} from 'src/stores/modules/messageStore';
 
@@ -30,13 +30,6 @@ interface IState {
     validationError: boolean;
 }
 
-enum DataFields {
-    abundance = 'abundance',
-    species = 'species',
-    temperature = 'temperature',
-    username = 'username',
-}
-
 @inject('authStore', 'messageStore')
 export default class Modal extends React.Component<IProps, IState> {
     constructor(props: IProps){
@@ -54,8 +47,9 @@ export default class Modal extends React.Component<IProps, IState> {
     }
 
     render(): React.ReactNode {
-        // Perhaps I could do a more verbose prop system, where this is all injected from the parent component, but
-        // I figured this was the cleaner look and I know it doesn't need to be scaled to such great heights.
+        // This is quite a busy component, though the logic is quite simple overall. There's just a lot of variables
+        // at play as I reuse the base modal. If this was any bigger, I'd separate the two modal into separate components
+        // entirely.
 
         // Uses the injected store type to decide what type of modal should be displayed
         const title = (this.props.type === ModalType.selectUsername)
@@ -70,6 +64,13 @@ export default class Modal extends React.Component<IProps, IState> {
             ? <button className="button is-xanadu-light" onClick={this.currentLocation}>Attach Current Coordinates</button>
             : <button className="button is-deep-space-sparkle">Coordinates Successfully Attached!</button>;
 
+        const previewImage = (this.state.details.file !== '')
+            ? <div className="container preview-container">
+                  <h2 className="has-text-centered">Preview:</h2>
+                  <img src={this.state.details.file} alt="Upload preview"/>
+              </div>
+            : null;
+
         const content = (this.props.type === ModalType.selectUsername)
             ? <input className="input" type="text" placeholder="Your User Name" onChange={this.handleChange(DataFields.username)} />
             : <React.Fragment>
@@ -79,8 +80,17 @@ export default class Modal extends React.Component<IProps, IState> {
                     {attachCoordinates}
                 </div>
                 <input className="input" type="text" placeholder="Temperature as Degrees in Celsius" onChange={this.handleChange(DataFields.temperature)} />
+                <div className="file is-centered is-xanadu-light">
+                    <label className="file-label">
+                        <input className="file-input" type="file" name="resume" onChange={this.handleChange(DataFields.file)}/>
+                        <span className="file-cta">
+                            <span className="file-label">Choose a file…</span>
+                        </span>
+                    </label>
+                </div>
+                {previewImage}
                 {validationError}
-              </React.Fragment>;
+            </React.Fragment>;
 
         return (
             <div className="modal is-active is-clipped">
@@ -105,7 +115,7 @@ export default class Modal extends React.Component<IProps, IState> {
     // where you're forced to use enums if you want options like this.
     private handleChange = (field: DataFields) => (event: React.ChangeEvent<HTMLInputElement>): void => {
         const details = {...this.state.details};
-        if (field == DataFields.abundance || field == DataFields.temperature) {
+        if (field === DataFields.abundance || field === DataFields.temperature) {
             const reg = new RegExp('^$|^[0-9]+$');
             if (!reg.test(event.target.value)) {
                 this.setState({ validationError: true });
@@ -113,10 +123,15 @@ export default class Modal extends React.Component<IProps, IState> {
                 details[field] = Number(event.target.value);
                 this.setState({details, validationError: false});
             }
-        } else if (field == DataFields.species){
+        } else if (field === DataFields.species){
             details.species = event.target.value;
             this.setState({details});
-        } else if (field == DataFields.username) {
+        } else if (field === DataFields.file) {
+            if (event.target.files != null) {
+                details.file = URL.createObjectURL(event.target.files[0]);
+                this.setState({ details });
+            }
+        } else if (field === DataFields.username) {
             this.setState({ username: event.target.value });
         }
     };
@@ -132,7 +147,6 @@ export default class Modal extends React.Component<IProps, IState> {
             setLocation(position.coords.latitude, position.coords.longitude);
         });
     };
-
 
     private handleSave = (): void => {
         if (this.props.type === ModalType.selectUsername) {

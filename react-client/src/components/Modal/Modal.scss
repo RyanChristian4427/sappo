@@ -7,4 +7,14 @@
   .error {
     color: red;
   }
+  .input-file {
+    height: 3rem;
+  }
+  .preview-container {
+    background: $theme-deep-space-sparkle;
+    color: $theme-isabelline;
+    padding: 4px;
+    margin-top: 2vh;
+    border-radius: 20px;
+  }
 }

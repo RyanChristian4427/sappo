@@ -14,6 +14,7 @@ export class MessageStore {
         this.message.coordinates = details.coordinates;
         this.message.species = details.species;
         this.message.temperature = details.temperature;
+        this.message.file = details.file;
     }
 
     @action setText(text: string): void {

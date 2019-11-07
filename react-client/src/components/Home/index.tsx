@@ -57,9 +57,9 @@ export default class Chat extends React.Component<{}, IState> {
     }
 
     private handleModal = (type: ModalType): void => {
-        if (type == ModalType.selectUsername) {
+        if (type === ModalType.selectUsername) {
             this.setState({ showUserModal: true });
-        } else if (type == ModalType.additionalDetails) {
+        } else if (type === ModalType.additionalDetails) {
             this.setState({ showDetailsModal: true });
         }
     };
@@ -70,9 +70,9 @@ export default class Chat extends React.Component<{}, IState> {
 
     // Returns true if the message has been sent
     private handleSend = (): boolean => {
-        if (this.injectedProps.authStore.currentUser == '') {
+        if (this.injectedProps.authStore.currentUser === '') {
             this.setState({ showUserModal: true });
-        } else if (this.injectedProps.messageStore.message.text != '') {
+        } else if (this.injectedProps.messageStore.message.text !== '') {
             this.injectedProps.messageStore.sendMessage();
             return true;
         }

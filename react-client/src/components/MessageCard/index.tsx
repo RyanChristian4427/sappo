@@ -28,7 +28,7 @@ export default class MessageCard extends React.Component<MessageProps, {}> {
             );
         };
 
-        const abundance = (message.abundance != 0)
+        const abundance = (message.abundance !== 0)
             ? messageRow('Abundance', message.abundance.toString())
             : null;
 
@@ -36,12 +36,16 @@ export default class MessageCard extends React.Component<MessageProps, {}> {
             ? messageRow('Coordinates', message.coordinates.toString())
             : null;
 
-        const species = (message.species != '')
+        const species = (message.species !== '')
             ? messageRow('Species', message.species)
             : null;
 
-        const temperature = (message.temperature != 0)
+        const temperature = (message.temperature !== 0)
             ? messageRow('Current Temperature', message.temperature.toString() + '° Celsius')
+            : null;
+
+        const file = (message.file !== '')
+            ? <img src={message.file}  alt={message.username + '\'s image'}/>
             : null;
 
         const messageContent = (): React.ReactNode => {
@@ -53,6 +57,7 @@ export default class MessageCard extends React.Component<MessageProps, {}> {
                     {coordinates}
                     {species}
                     {temperature}
+                    {file}
                 </div>
             );
         };
