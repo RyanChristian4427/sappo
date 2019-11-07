@@ -5,10 +5,10 @@ export enum ModalType {
 
 export enum DataFields {
     abundance = 'abundance',
+    coordinates = 'coordinates',
     file = 'file',
     species = 'species',
     temperature = 'temperature',
-    username = 'username',
 }
 
 export interface AdditionalDetails {

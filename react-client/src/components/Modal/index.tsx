@@ -6,6 +6,7 @@ import {AuthStore} from 'src/stores/modules/authStore';
 import {MessageStore} from 'src/stores/modules/messageStore';
 
 import './Modal.scss';
+import DetailsModal from './detailsModal';
 
 
 interface IProps {
@@ -56,41 +57,9 @@ export default class Modal extends React.Component<IProps, IState> {
             ? 'Please Choose a User Name'
             : 'Please Enter Any Other Details You May Have';
 
-        const validationError = (this.state.validationError)
-            ? <h2 className="error">The temperature and abundance fields both can only be numbers, or empty</h2>
-            : null;
-
-        const attachCoordinates = (!this.state.coordinatesAttached)
-            ? <button className="button is-xanadu-light" onClick={this.currentLocation}>Attach Current Coordinates</button>
-            : <button className="button is-deep-space-sparkle">Coordinates Successfully Attached!</button>;
-
-        const previewImage = (this.state.details.file !== '')
-            ? <div className="container preview-container">
-                  <h2 className="has-text-centered">Preview:</h2>
-                  <img src={this.state.details.file} alt="Upload preview"/>
-              </div>
-            : null;
-
         const content = (this.props.type === ModalType.selectUsername)
-            ? <input className="input" type="text" placeholder="Your User Name" onChange={this.handleChange(DataFields.username)} />
-            : <React.Fragment>
-                <input className="input" type="text" placeholder="Abundance" onChange={this.handleChange(DataFields.abundance)} />
-                <input className="input" type="text" placeholder="Species" onChange={this.handleChange(DataFields.species)} />
-                <div className="has-text-centered">
-                    {attachCoordinates}
-                </div>
-                <input className="input" type="text" placeholder="Temperature as Degrees in Celsius" onChange={this.handleChange(DataFields.temperature)} />
-                <div className="file is-centered is-xanadu-light">
-                    <label className="file-label">
-                        <input className="file-input" type="file" name="resume" onChange={this.handleChange(DataFields.file)}/>
-                        <span className="file-cta">
-                            <span className="file-label">Choose a file…</span>
-                        </span>
-                    </label>
-                </div>
-                {previewImage}
-                {validationError}
-            </React.Fragment>;
+            ? <input className="input" type="text" placeholder="Your User Name" onChange={this.handleChange} />
+            : <DetailsModal handleDetailsChange={this.handleDetailsChange} />;
 
         return (
             <div className="modal is-active is-clipped">
@@ -113,39 +82,16 @@ export default class Modal extends React.Component<IProps, IState> {
 
     // Uses dataFields as an enum to decide which input actually needs to be updated. Got this idea from a project I did in Rust,
     // where you're forced to use enums if you want options like this.
-    private handleChange = (field: DataFields) => (event: React.ChangeEvent<HTMLInputElement>): void => {
-        const details = {...this.state.details};
-        if (field === DataFields.abundance || field === DataFields.temperature) {
-            const reg = new RegExp('^$|^[0-9]+$');
-            if (!reg.test(event.target.value)) {
-                this.setState({ validationError: true });
-            } else {
-                details[field] = Number(event.target.value);
-                this.setState({details, validationError: false});
-            }
-        } else if (field === DataFields.species){
-            details.species = event.target.value;
-            this.setState({details});
-        } else if (field === DataFields.file) {
-            if (event.target.files != null) {
-                details.file = URL.createObjectURL(event.target.files[0]);
-                this.setState({ details });
-            }
-        } else if (field === DataFields.username) {
-            this.setState({ username: event.target.value });
-        }
+    private handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+        this.setState({ username: event.target.value });
     };
 
-    private currentLocation = (): void  => {
-        const setLocation = (latitude: number, longitude: number): void => {
-            const details = {...this.state.details};
-            details.coordinates = [latitude, longitude];
-            this.setState({ details, coordinatesAttached: true });
-        };
-
-        navigator.geolocation.getCurrentPosition(function(position) {
-            setLocation(position.coords.latitude, position.coords.longitude);
-        });
+    private handleDetailsChange = (field: DataFields, value: string | number | [number, number]): void  => {
+        const details = {...this.state.details};
+        // @ts-ignore
+        //Have to suppress as there's no easy or clean way to let TS know we're sure of the types
+        details[field] = value;
+        this.setState({ details });
     };
 
     private handleSave = (): void => {
