@@ -8,6 +8,10 @@
     border-radius: 20px;
     display: inline-block;
     padding: 6px;
+
+    .level:not(:last-child) {
+      margin-bottom: 0;
+    }
   }
 
   h1, h2, h6 {
