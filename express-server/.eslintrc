@@ -6,16 +6,21 @@
     "sourceType": "module"
   },
   "rules": {
-    "semi": ["error", "always"],
-    "quotes": ["warn", "single"],
     "@typescript-eslint/explicit-function-return-type": "warn",
     "@typescript-eslint/no-explicit-any": 1,
-    "@typescript-eslint/ban-ts-ignore": 0,
     "@typescript-eslint/no-inferrable-types": [
       "warn", {
         "ignoreParameters": true
       }
     ],
-    "@typescript-eslint/no-unused-vars": "warn"
+    "@typescript-eslint/no-unused-vars": "warn",
+    "quotes": "off",
+    "@typescript-eslint/quotes": ["warn", "single"],
+    "@typescript-eslint/no-use-before-define": ["error", { "classes": false }],
+    "arrow-parens": "warn",
+    "@typescript-eslint/ban-ts-ignore": ["off"],
+    "@typescript-eslint/interface-name-prefix": "off",
+    "semi": "off",
+    "@typescript-eslint/semi": ["warn"]
   }
 }
