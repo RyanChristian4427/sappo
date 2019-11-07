@@ -1,8 +1,10 @@
-# React-Typescript-MobX-Boilerplate
+# Sappo React Client
 
-This is a boilerplate/template project used to bootstrap a new React App. This is built using Create React App.
+This is the front end client for Sappo, an ad hoc communication app used to assist in citizen science. The project is centered around the Brazilian Atlantic Rainforest, aims to retrieve information about frogs in particular. "Sappo" is Portuguese for "frog".
 
-This template includes routing, global state management, Typescript, SCSS (Bulma, to be specific) as well as easy API requests with Axios and JWT management.
+The front end for this project is written in React, a library used to for building user interfaces. Global state is managed using MobX, every component and helper file is written using TypeScript, and this project utilizes the Bulma SCSS framework.
+
+This React Client will be updated in conjunction with the Express API server.
 
 ## Getting Started
 
@@ -10,26 +12,35 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
 
 ```
-Node/NPM
+NodeJs
+NPM
 ```
 
 ### Running
 
-To start a dev server, just run from project root:
+To run the web server on localhost, you will need to run from the root directory: 
 
+```
+npm install
+```
+
+#### Compiles and hot-reloads for development
 ```
 npm run serve
 ```
 
-## Built With
+#### Compiles and minifies for production
+```
+npm run build
+```
 
-* [React](https://reactjs.org/) - The web framework used
-* [Typescript](https://www.typescriptlang.org/) - A typed superset of JavaScript
-* [MobX](https://mobx.js.org/README.html) - State management tool
+## Code Style
 
-https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0 don't use containers
+The code is formatted to the linting rules found in [.eslintrc.js](.eslintrc.js). The linting rules are all quite standard.
 
-class based, bad https://github.com/mobxjs/mobx-react/issues/256
+### Lints files
+```
+npm run lint
+```
