@@ -1,13 +1,14 @@
 import React from 'react';
 
 import logo from 'src/assets/logo.png';
+import {ModalType} from 'src/models/Modal';
 
 import './HeroHeader.scss';
 
 
 interface IProps {
     currentUser: string;
-    handleUserModal: () => void;
+    handleModal: (type: ModalType) => void;
 }
 
 export default class HeroHeader extends React.Component<IProps, {}> {
@@ -33,7 +34,7 @@ export default class HeroHeader extends React.Component<IProps, {}> {
                                 {currentlyLoggedInAs}
                             </div>
                             <div className="navbar-end">
-                                <button className="button is-charleston-green-dark" onClick={this.props.handleUserModal}>Pick User Name</button>
+                                <button className="button is-charleston-green-dark" onClick={((): void => this.props.handleModal(ModalType.selectUsername))}>Pick User Name</button>
                             </div>
                         </div>
                     </div>

@@ -16,9 +16,12 @@ export class MessageStore {
         this.message.temperature = details.temperature;
     }
 
-    @action sendMessage(text: string): void {
-        this.message.username = authStore.currentUser;
+    @action setText(text: string): void {
         this.message.text = text;
+    }
+
+    @action sendMessage(): void {
+        this.message.username = authStore.currentUser;
         this.message.datetimestamp = new Date();
         apiService.post('/message', this.message);
         this.clearMessage();

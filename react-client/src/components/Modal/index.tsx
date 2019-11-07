@@ -14,8 +14,8 @@ interface IProps {
 }
 
 // Doing this is not recommended by any means, however, Typescript just fundamentally does not work with
-// mobx's idea of injection. With the introduction of hooks, mobx no longer suggests injection at all.
-// However, I decided to do this to keep the class based system. This turned out to be a poor decision.
+// mobx's idea of injection. Doing this is the workaround, and better solution than suppressing typescripts warnings
+// that a store type does not exist on the props.
 interface InjectedProps {
     authStore: AuthStore;
     messageStore: MessageStore;
@@ -105,7 +105,7 @@ export default class Modal extends React.Component<IProps, IState> {
     // where you're forced to use enums if you want options like this.
     private handleChange = (field: DataFields) => (event: React.ChangeEvent<HTMLInputElement>): void => {
         const details = {...this.state.details};
-        if (field === DataFields.abundance || field === DataFields.temperature) {
+        if (field == DataFields.abundance || field == DataFields.temperature) {
             const reg = new RegExp('^$|^[0-9]+$');
             if (!reg.test(event.target.value)) {
                 this.setState({ validationError: true });
@@ -113,10 +113,10 @@ export default class Modal extends React.Component<IProps, IState> {
                 details[field] = Number(event.target.value);
                 this.setState({details, validationError: false});
             }
-        } else if (field === DataFields.species){
+        } else if (field == DataFields.species){
             details.species = event.target.value;
             this.setState({details});
-        } else if (field === DataFields.username) {
+        } else if (field == DataFields.username) {
             this.setState({ username: event.target.value });
         }
     };
