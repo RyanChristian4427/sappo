@@ -22,7 +22,10 @@ export const postMessage = (req: Request, res: Response, next: NextFunction): vo
             return next(err);
         } else {
             const io = app.get('io');
-            io.emit('new_message', req.body);
+            // Test breaks otherwise
+            if (io !== undefined) {
+                io.emit('new_message', req.body);
+            }
             res.sendStatus(200);
         }
     });

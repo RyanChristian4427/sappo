@@ -6,7 +6,7 @@
         "serve:dev": "npm run build && node dist/server.js",
         "serve:prod": "npm run build && NODE_ENV=production node dist/server.js",
         "build": "tsc && npm run lint",
-        "test": "jest --forceExit --coverage --verbose",
+        "test": "jest --forceExit --coverage --verbose --detectOpenHandles",
         "lint": "eslint \"**/*.{js,ts}\""
     },
     "dependencies": {
