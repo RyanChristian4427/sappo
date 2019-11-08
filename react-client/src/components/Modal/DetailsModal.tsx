@@ -71,6 +71,7 @@ export default class DetailsModal extends React.Component<IProps, IState> {
             if (!reg.test(event.target.value)) {
                 this.setState({ validationError: true });
             } else {
+                this.setState({ validationError: false });
                 this.props.handleDetailsChange(field, Number(event.target.value));
             }
         } else if (field === DataFields.species){
