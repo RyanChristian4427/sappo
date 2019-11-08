@@ -61,6 +61,14 @@ Both the client and the server have their own `.eslintrc.js` files that dictate 
 Unfortunately, Create React App (CRA) ships with their own eslint configuration that can not be edited by the user in anyway without ejecting, as Dan Abramov, the lead developer behind Redux and CRA, says [Create React App config is not about tastes](https://github.com/facebook/create-react-app/issues/808#issuecomment-252936434). As such, there are some incorrect linting errors that come up when running the React client that I can not turn off. For instance, warnings about type coercion using `==` instead of `===`, even though there is no type coercion in TS. It seems foolish to eject over such a minor issue like linting warnings, so I simply ignored them and used my own linting config, which can be ran by: `npm run lint`.
 
 
+## Testing
+
+#### Client
+The testing strategy for the client is quite simple: just test that all the components render. Thanks to TS, run time errors are near non-existent. The only place that they can really occur are logic errors, which can't very easily be tested for, or data entry points, like in an incoming chat message. While it is possible to create mock calls from this client to the API, the value gained from doing so would be quite minimal. TS's great error system informs a developer what type was found, and what was expected, so minimal time is needed to make the proper adjustments to the type sent from the server or the type to be mapped into in the client. Testing only the rendering of all components is the most efficient test
+
+
+### Paradigms 
+
 ## Built With
 
 * [React](https://reactjs.org/) - Web Library used to build the Client

@@ -4,14 +4,13 @@ This is the front end client for Sappo, an ad hoc communication app used to assi
 
 The front end for this project is written in React, a library used to for building user interfaces. Global state is managed using MobX, every component and helper file is written using TypeScript, and this project utilizes the Bulma SCSS framework.
 
-This React Client will be updated in conjunction with the Express API server.
+This React client will be updated in conjunction with the Express API server.
 
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
 ### Prerequisites
-
 
 ```
 NodeJs
