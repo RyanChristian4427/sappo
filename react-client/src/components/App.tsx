@@ -6,7 +6,7 @@ import {
   Route,
 } from 'react-router-dom';
 import Chat from './Home';
-import PageNotFound from './errors/pageNotFound';
+import PageNotFound from 'components/errors/PageNotFound';
 
 export default class App extends React.Component<{}, {}> {
   render(): React.ReactNode {

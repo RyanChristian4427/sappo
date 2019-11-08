@@ -6,7 +6,7 @@ import {AuthStore} from 'stores/modules/authStore';
 import {MessageStore} from 'stores/modules/messageStore';
 
 import './Modal.scss';
-import DetailsModal from './detailsModal';
+import DetailsModal from './DetailsModal';
 
 
 interface IProps {

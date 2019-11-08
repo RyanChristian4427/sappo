@@ -1,13 +1,13 @@
 import { observable, action } from 'mobx';
 import { apiService } from 'ts-api-toolkit';
 
-import {BaseChatMessage} from 'models/ChatMessage';
+import {EmptyChatMessageBeforeSend} from 'models/ChatMessage';
 import {AdditionalDetails} from 'models/Modal';
 import authStore from 'stores/modules/authStore';
 
 export class MessageStore {
 
-    @observable message = BaseChatMessage;
+    @observable message = EmptyChatMessageBeforeSend;
 
     @action setAdditionalDetails(details: AdditionalDetails): void {
         this.message.abundance = details.abundance;
@@ -29,7 +29,7 @@ export class MessageStore {
     }
 
     @action clearMessage(): void {
-        this.message = BaseChatMessage;
+        this.message = EmptyChatMessageBeforeSend;
     }
 }
 
