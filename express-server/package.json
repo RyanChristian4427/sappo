@@ -2,14 +2,9 @@
     "name": "express-typescript-starter",
     "version": "0.1.0",
     "description": "A starting point for Node.js express apps with TypeScript",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/Microsoft/TypeScript-Node-Starter"
-    },
-    "author": "Bowden Kelly",
-    "license": "MIT",
     "scripts": {
-        "serve": "npm run build && node dist/server.js",
+        "serve:dev": "npm run build && node dist/server.js",
+        "serve:prod": "npm run build && NODE_ENV=production node dist/server.js",
         "build": "tsc && npm run lint",
         "test": "jest --forceExit --coverage --verbose",
         "lint": "eslint \"**/*.{js,ts}\""

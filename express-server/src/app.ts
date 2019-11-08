@@ -5,14 +5,13 @@ import path from 'path';
 
 // Controllers (route handlers)
 import * as messageController from './controllers/messages';
+import {MONGODB_URI} from './util/secrets';
 
 // Create Express server
 const app = express();
 
 // Connect to MongoDB
-const mongoUrl = 'mongodb://localhost:27017/sappo';
-
-mongoose.connect(mongoUrl, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true } ).then(
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true } ).then(
     () => { /** ready to use. The `mongoose.connect()` promise resolves to undefined. */ },
 ).catch((err) => {
     console.log('MongoDB connection error. Please make sure MongoDB is running. ' + err);
