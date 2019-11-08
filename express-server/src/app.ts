@@ -31,7 +31,8 @@ app.use(
 /**
  * API examples routes.
  */
-app.post('/api/v1/message', messageController.newMessage);
+app.post('/api/v1/message', messageController.postMessage);
+app.get('/api/v1/messages', messageController.getMessages);
 
 
 export default app;

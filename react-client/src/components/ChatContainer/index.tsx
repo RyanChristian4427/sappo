@@ -1,5 +1,6 @@
 import React from 'react';
 import {inject, observer} from 'mobx-react';
+import {apiService} from 'ts-api-toolkit';
 
 import MessageCard from 'components/MessageCard';
 import {ChatMessageAfterReturn} from 'models/ChatMessage';
@@ -61,6 +62,15 @@ export default class ChatContainer extends React.Component<IProps, IState> {
         socket.on('new_message', (message: ChatMessageAfterReturn) => {
             this.setState({messages: [...this.state.messages, message ]});
         });
+    }
+
+    public componentDidMount(): void {
+        apiService.get('/messages')
+            .then(({ data }) => {
+                data.forEach((message: ChatMessageAfterReturn) => {
+                    this.setState({messages: [...this.state.messages, message]});
+                });
+            });
     }
 
     private get injectedProps(): InjectedProps {

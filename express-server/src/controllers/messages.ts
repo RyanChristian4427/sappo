@@ -2,8 +2,7 @@ import { Response, Request, NextFunction } from 'express';
 import app from '../app';
 import {ChatMessage, Message} from '../models/Message';
 
-export const newMessage = (req: Request, res: Response, next: NextFunction): void => {
-
+export const postMessage = (req: Request, res: Response, next: NextFunction): void => {
     const messageData: ChatMessage = req.body;
 
     const message = new Message({
@@ -26,6 +25,12 @@ export const newMessage = (req: Request, res: Response, next: NextFunction): voi
             io.emit('new_message', req.body);
             res.sendStatus(200);
         }
+    });
+};
+
+export const getMessages = (req: Request, res: Response): void => {
+    Message.find({}, function(err, messages) {
+        res.json(messages);
     });
 };
 
