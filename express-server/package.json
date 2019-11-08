@@ -4,7 +4,7 @@
     "private": true,
     "scripts": {
         "serve:dev": "npm run build && node dist/server.js",
-        "serve:prod": "npm run build && NODE_ENV=production node dist/server.js",
+        "serve:prod": "npm run build && cross-env NODE_ENV=production node dist/server.js",
         "build": "tsc && npm run lint",
         "test": "jest --forceExit --coverage --verbose --detectOpenHandles",
         "lint": "eslint \"**/*.{js,ts}\""
@@ -37,6 +37,7 @@
         "@typescript-eslint/parser": "^2.3.1",
         "acorn": "^7.1.0",
         "chai": "^4.2.0",
+        "cross-env": "^6.0.3",
         "eslint": "^6.4.0",
         "jest": "^24.9.0",
         "supertest": "^4.0.2",
