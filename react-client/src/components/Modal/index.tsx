@@ -1,9 +1,9 @@
 import React from 'react';
 import {inject} from 'mobx-react';
 
-import {AdditionalDetails, BaseDetails, DataFields, ModalType} from 'src/models/Modal';
-import {AuthStore} from 'src/stores/modules/authStore';
-import {MessageStore} from 'src/stores/modules/messageStore';
+import {AdditionalDetails, BaseDetails, DataFields, ModalType} from 'models/Modal';
+import {AuthStore} from 'stores/modules/authStore';
+import {MessageStore} from 'stores/modules/messageStore';
 
 import './Modal.scss';
 import DetailsModal from './detailsModal';
@@ -17,11 +17,9 @@ interface IProps {
 // Doing this is not recommended by any means, however, Typescript just fundamentally does not work with
 // mobx's idea of injection. Doing this is the workaround, and better solution than suppressing typescripts warnings
 // that a store type does not exist on the props.
-interface InjectedProps {
+interface InjectedProps extends IProps {
     authStore: AuthStore;
     messageStore: MessageStore;
-    closeModal: () => void;
-    type: ModalType;
 }
 
 interface IState {

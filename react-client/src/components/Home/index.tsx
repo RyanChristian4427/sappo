@@ -1,12 +1,12 @@
 import React from 'react';
 import {inject, observer} from 'mobx-react';
 
-import ChatContainer from 'src/components/ChatContainer';
-import Modal from 'src/components/Modal';
-import HeroHeader from 'src/components/HeroHeader';
-import {ModalType} from 'src/models/Modal';
-import {AuthStore} from 'src/stores/modules/authStore';
-import {MessageStore} from 'src/stores/modules/messageStore';
+import ChatContainer from 'components/ChatContainer';
+import Modal from 'components/Modal';
+import HeroHeader from 'components/HeroHeader';
+import {ModalType} from 'models/Modal';
+import {AuthStore} from 'stores/modules/authStore';
+import {MessageStore} from 'stores/modules/messageStore';
 
 import './Home.scss';
 

@@ -1,5 +1,5 @@
 import { observable, action } from 'mobx';
-import socket from '../../models/Sockets';
+import socket from 'models/Sockets';
 
 export class AuthStore {
     @observable currentUser = '';

@@ -1,13 +1,13 @@
 import React from 'react';
 
-import {ReturnedChatMessage} from 'src/models/ChatMessage';
+import {ChatMessageAfterReturn} from 'models/ChatMessage';
 import {displayTimeStamp} from './utility';
 
 import './MessageCard.scss';
 
 
 interface MessageProps {
-    message: ReturnedChatMessage;
+    message: ChatMessageAfterReturn;
     currentUser: string;
 }
 

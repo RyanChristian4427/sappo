@@ -1,12 +1,12 @@
 import React from 'react';
 import {inject, observer} from 'mobx-react';
 
-import MessageCard from 'src/components/MessageCard';
-import {ReturnedChatMessage} from 'src/models/ChatMessage';
-import {ModalType} from 'src/models/Modal';
-import socket from 'src/models/Sockets';
-import {AuthStore} from 'src/stores/modules/authStore';
-import {MessageStore} from 'src/stores/modules/messageStore';
+import MessageCard from 'components/MessageCard';
+import {ChatMessageAfterReturn} from 'models/ChatMessage';
+import {ModalType} from 'models/Modal';
+import socket from 'models/Sockets';
+import {AuthStore} from 'stores/modules/authStore';
+import {MessageStore} from 'stores/modules/messageStore';
 
 import './ChatContainer.scss';
 
@@ -19,17 +19,15 @@ interface IProps {
 // Doing this is not recommended by any means, however, Typescript just fundamentally does not work with
 // mobx's idea of injection. Doing this is the workaround, and better solution than suppressing typescripts warnings
 // that a store type does not exist on the props.
-interface InjectedProps {
+interface InjectedProps extends IProps {
     authStore: AuthStore;
     messageStore: MessageStore;
-    handleModal: (type: ModalType) => void;
-    handleSend: () => boolean;
 }
 
 interface IState {
     showJoinMessage: boolean;
     text: string;
-    messages: Array<ReturnedChatMessage>;
+    messages: Array<ChatMessageAfterReturn>;
     newestUser: string;
 }
 
@@ -60,7 +58,7 @@ export default class ChatContainer extends React.Component<IProps, IState> {
         });
 
         // Appends any new messages to the end of a message array
-        socket.on('new_message', (message: ReturnedChatMessage) => {
+        socket.on('new_message', (message: ChatMessageAfterReturn) => {
             this.setState({messages: [...this.state.messages, message ]});
         });
     }

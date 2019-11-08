@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {DataFields} from 'src/models/Modal';
+import {DataFields} from 'models/Modal';
 
 import './Modal.scss';
 

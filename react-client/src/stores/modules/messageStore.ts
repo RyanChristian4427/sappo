@@ -1,9 +1,9 @@
 import { observable, action } from 'mobx';
 import { apiService } from 'ts-api-toolkit';
 
-import {BaseChatMessage} from 'src/models/ChatMessage';
-import {AdditionalDetails} from 'src/models/Modal';
-import authStore from 'src/stores/modules/authStore';
+import {BaseChatMessage} from 'models/ChatMessage';
+import {AdditionalDetails} from 'models/Modal';
+import authStore from 'stores/modules/authStore';
 
 export class MessageStore {
 

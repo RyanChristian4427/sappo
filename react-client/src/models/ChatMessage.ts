@@ -1,7 +1,7 @@
-export interface ChatMessage {
+interface BaseChatMessage {
     username: string;
     text: string;
-    datetimestamp: Date;
+    datetimestamp: Date | string;
     abundance: number;
     coordinates: [number, number];
     species: string;
@@ -9,7 +9,11 @@ export interface ChatMessage {
     file: string;
 }
 
-export const BaseChatMessage: ChatMessage = {
+interface ChatMessageBeforeSend extends BaseChatMessage {
+    datetimestamp: Date;
+}
+
+export const BaseChatMessage: ChatMessageBeforeSend = {
     username: '',
     text: '',
     datetimestamp: new Date(0),
@@ -21,13 +25,6 @@ export const BaseChatMessage: ChatMessage = {
 };
 
 // Json encoding changes Date object into string
-export interface ReturnedChatMessage {
-    username: string;
-    text: string;
+export interface ChatMessageAfterReturn extends BaseChatMessage {
     datetimestamp: string;
-    abundance: number;
-    coordinates: [number, number];
-    species: string;
-    temperature: number;
-    file: string;
 }
