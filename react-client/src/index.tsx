@@ -1,14 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './styles/index.scss';
-import App from './components/App';
-import { Provider } from 'mobx-react';
-import {createStores} from './stores';
 
-const stores = createStores();
+import {App} from 'components/App';
+
+import 'styles/index.scss';
+
 
 ReactDOM.render(
-    <Provider {...stores}>
-        <App />
-    </Provider>,
+    <App />,
     document.getElementById('root'));

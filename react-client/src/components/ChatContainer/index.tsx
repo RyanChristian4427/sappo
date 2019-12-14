@@ -1,13 +1,12 @@
-import React from 'react';
-import {inject, observer} from 'mobx-react';
+import React, {useContext, useEffect, useState} from 'react';
+import {observer} from 'mobx-react-lite';
 import {apiService} from 'ts-api-toolkit';
 
 import MessageCard from 'components/MessageCard';
 import {ChatMessageAfterReturn} from 'models/ChatMessage';
 import {ModalType} from 'models/Modal';
 import socket from 'models/Sockets';
-import {AuthStore} from 'stores/modules/authStore';
-import {MessageStore} from 'stores/modules/messageStore';
+import {AuthStoreContext, MessageStoreContext} from 'stores';
 
 import './ChatContainer.scss';
 
@@ -17,108 +16,90 @@ interface IProps {
     handleSend: () => boolean;
 }
 
-// Doing this is not recommended by any means, however, Typescript just fundamentally does not work with
-// mobx's idea of injection. Doing this is the workaround, and better solution than suppressing typescripts warnings
-// that a store type does not exist on the props.
-interface InjectedProps extends IProps {
-    authStore: AuthStore;
-    messageStore: MessageStore;
-}
+export const ChatContainer: React.FC<IProps> = observer((props: IProps) => {
+    const authStore = useContext(AuthStoreContext);
+    const messageStore = useContext(MessageStoreContext);
 
-interface IState {
-    showJoinMessage: boolean;
-    text: string;
-    messages: Array<ChatMessageAfterReturn>;
-    newestUser: string;
-}
+    const [showJoinMessage, setShowJoinMessage] = useState(false);
+    const [text, setText] = useState('');
+    const [messages, setMessages] = useState();
+    const [newestUser, setNewestUser] = useState('');
 
-@inject('authStore', 'messageStore')
-@observer
-export default class ChatContainer extends React.Component<IProps, IState> {
-    constructor(props: IProps) {
-        super(props);
-        this.state = {
-            showJoinMessage: false,
-            text: '',
-            messages: [],
-            newestUser: '',
-        };
-        socket.on('new_user_join', (newUser: string) => {
-            if (newUser !== this.injectedProps.authStore.currentUser) {
-                this.setState({
-                    newestUser: newUser,
-                    showJoinMessage: true
+    useEffect(() => {
+        apiService.get('/messages')
+            .then(({ data }) => {
+                data.forEach((message: ChatMessageAfterReturn) => {
+                    setMessages((existingMessages: ChatMessageAfterReturn[]) => {
+                        if (existingMessages) return [...existingMessages, message];
+                        else return [message];
+                    });
                 });
+            });
+
+        socket.on('new_user_join', (newUser: string) => {
+            if (newUser !== authStore.currentUser) {
+                setNewestUser(newUser);
+                setShowJoinMessage(true);
 
                 setTimeout(() => {
-                    this.setState({
-                        showJoinMessage: false
-                    });
+                    setShowJoinMessage(false);
                 }, 20000);
             }
         });
 
-        // Appends any new messages to the end of a message array
         socket.on('new_message', (message: ChatMessageAfterReturn) => {
-            this.setState({messages: [...this.state.messages, message ]});
-        });
-    }
-
-    public componentDidMount(): void {
-        apiService.get('/messages')
-            .then(({ data }) => {
-                data.forEach((message: ChatMessageAfterReturn) => {
-                    this.setState({messages: [...this.state.messages, message]});
-                });
+            console.log('New message');
+            setMessages((existingMessages: ChatMessageAfterReturn[]) => {
+                if (existingMessages) return [...existingMessages, message];
+                else return [message];
             });
-    }
+        });
+    }, []);
 
-    private get injectedProps(): InjectedProps {
-        return this.props as InjectedProps;
-    }
-
-    public render(): React.ReactNode {
-        const { currentUser } = this.injectedProps.authStore;
-
-        const messages = (this.state.messages.map((message) => {
-            return (
-                <MessageCard key={message.username + message.text} message={message} currentUser={currentUser} />
-            );
-        }));
-
-        const joinMessage = (this.state.showJoinMessage)
-            ? <h2 className="join-message">{this.state.newestUser} has joined the chat</h2>
-            : null;
-
-        return (
-            <section className="chat-container is-xanadu-light">
-                <div className="messages">
-                    {messages}
+    return (
+        <section className="chat-container is-xanadu-light">
+            <div className="messages">
+                {messages &&
+                    messages.map((message: ChatMessageAfterReturn, index: number) => {
+                        return (
+                            <MessageCard key={index}
+                                         message={message}
+                                         currentUser={authStore.currentUser}
+                            />
+                        );
+                    })
+                }
+            </div>
+            {showJoinMessage &&
+                <h2 className="join-message">{newestUser} has joined the chat</h2>
+            }
+            <div className="field has-addons">
+                <div className="control is-expanded">
+                    <input className="input"
+                           type="text"
+                           placeholder="Send Text Message"
+                           value={text}
+                           onChange={(e): void => setText(e.target.value)}
+                    />
                 </div>
-                {joinMessage}
-                <div className="field has-addons">
-                    <div className="control is-expanded">
-                        <input className="input" type="text" placeholder="Send Text Message" onChange={this.handleChange} value={this.state.text} />
-                    </div>
-                    <div className="control">
-                        <button className="button is-xanadu-light" id="details-button" onClick={((): void => this.props.handleModal(ModalType.additionalDetails))}>Add Details</button>
-                    </div>
-                    <div className="control">
-                        <button className="button is-xanadu-light" onClick={this.handleSend}>Send</button>
-                    </div>
+                <div className="control">
+                    <button className="button is-xanadu-light"
+                            id="details-button"
+                            onClick={((): void => props.handleModal(ModalType.additionalDetails))}>
+                        Add Details
+                    </button>
                 </div>
-            </section>
-        );
-    }
-
-    private handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-        this.setState({ text: event.target.value });
-    };
-
-    private handleSend = (): void => {
-        this.injectedProps.messageStore.setText(this.state.text);
-        if (this.props.handleSend()) {
-            this.setState({ text: '' });
-        }
-    };
-}
+                <div className="control">
+                    <button className="button is-xanadu-light"
+                            onClick={(): void => {
+                                messageStore.setText(text);
+                                if (props.handleSend()) setText('');
+                            }}
+                    >
+                        Send
+                    </button>
+                </div>
+            </div>
+        </section>
+    );
+});

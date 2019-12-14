@@ -1,81 +1,60 @@
-import React from 'react';
-import {inject, observer} from 'mobx-react';
+import React, {useContext, useState} from 'react';
+import {observer} from 'mobx-react-lite';
 
-import ChatContainer from 'components/ChatContainer';
-import Modal from 'components/Modal';
+import {ChatContainer} from 'components/ChatContainer';
+
 import HeroHeader from 'components/HeroHeader';
+import {Modal} from 'components/Modal';
 import {ModalType} from 'models/Modal';
-import {AuthStore} from 'stores/modules/authStore';
-import {MessageStore} from 'stores/modules/messageStore';
+import {AuthStoreContext, MessageStoreContext} from 'stores';
+
 
 import './Home.scss';
 
-// Doing this is not recommended by any means, however, Typescript just fundamentally does not work with
-// mobx's idea of injection. Doing this is the workaround, and better solution than suppressing typescripts warnings
-// that a store type does not exist on the props.
-interface InjectedProps {
-    authStore: AuthStore;
-    messageStore: MessageStore;
-}
 
-interface IState {
-    showUserModal: boolean;
-    showDetailsModal: boolean;
-}
+export const Home: React.FC = observer(() => {
+    const authStore = useContext(AuthStoreContext);
+    const messageStore = useContext(MessageStoreContext);
 
-@inject('authStore', 'messageStore')
-@observer
-export default class Chat extends React.Component<{}, IState> {
-    constructor(props: {}) {
-        super(props);
-        this.state = {
-            showUserModal: false,
-            showDetailsModal: false,
-        };
-    }
+    const [showUserModal, setShowUserModal] = useState(false);
+    const [showDetailsModal, setShowDetailsModal] = useState(false);
 
-    private get injectedProps(): InjectedProps {
-        return this.props as InjectedProps;
-    }
 
-    public render(): React.ReactNode {
-        const { currentUser } = this.injectedProps.authStore;
-
-        const modal = (this.state.showUserModal)
-            ? <Modal closeModal={this.closeModal} type={ModalType.selectUsername} />
-            : (this.state.showDetailsModal)
-                ? <Modal closeModal={this.closeModal} type={ModalType.additionalDetails} />
-                : null;
-
-        return (
-            <div className="chat-page">
-                <HeroHeader currentUser={currentUser} handleModal={this.handleModal} />
-                {modal}
-                <ChatContainer handleModal={this.handleModal} handleSend={this.handleSend}/>
-            </div>
-        );
-    }
-
-    private handleModal = (type: ModalType): void => {
+    const handleModal = (type: ModalType): void => {
         if (type === ModalType.selectUsername) {
-            this.setState({ showUserModal: true });
+            setShowUserModal(true);
         } else if (type === ModalType.additionalDetails) {
-            this.setState({ showDetailsModal: true });
+            setShowDetailsModal(true);
         }
     };
 
-    public closeModal = (): void => {
-        this.setState({ showUserModal: false, showDetailsModal: false });
+    const closeModal = (): void => {
+        setShowUserModal(false);
+        setShowDetailsModal(false);
     };
 
     // Returns true if the message has been sent
-    private handleSend = (): boolean => {
-        if (this.injectedProps.authStore.currentUser === '') {
-            this.setState({ showUserModal: true });
-        } else if (this.injectedProps.messageStore.message.text !== '') {
-            this.injectedProps.messageStore.sendMessage();
+    const handleSend = (): boolean => {
+        if (authStore.currentUser === '') {
+            setShowUserModal(true);
+        } else if (messageStore.message.text !== '') {
+            messageStore.sendMessage();
             return true;
         }
         return false;
     };
-}
+
+    const modal = (showUserModal)
+        ? <Modal closeModal={closeModal} type={ModalType.selectUsername} />
+        : (showDetailsModal)
+            ? <Modal closeModal={closeModal} type={ModalType.additionalDetails} />
+            : null;
+
+    return (
+        <div className="chat-page">
+            <HeroHeader currentUser={authStore.currentUser} handleModal={handleModal} />
+            {modal}
+            <ChatContainer handleModal={handleModal} handleSend={handleSend}/>
+        </div>
+    );
+});
