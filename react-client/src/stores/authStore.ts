@@ -1,7 +1,8 @@
 import { observable, action } from 'mobx';
+
 import socket from 'models/Sockets';
 
-export class AuthStore {
+class AuthStore {
     @observable currentUser = '';
 
     @action setUsername(username: string): void {
@@ -10,4 +11,4 @@ export class AuthStore {
     }
 }
 
-export default new AuthStore();
+export const authStore = new AuthStore();

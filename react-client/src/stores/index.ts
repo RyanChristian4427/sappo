@@ -1,9 +1,7 @@
-import authStore from './modules/authStore';
-import messageStore from './modules/messageStore';
+import {createContext} from 'react';
 
-export function createStores(): {} {
-    return {
-        authStore,
-        messageStore,
-    };
-}
+import {authStore} from 'stores/authStore';
+import {messageStore} from 'stores/messageStore';
+
+export const AuthStoreContext = createContext(authStore);
+export const MessageStoreContext = createContext(messageStore);

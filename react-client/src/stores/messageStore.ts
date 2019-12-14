@@ -3,13 +3,14 @@ import { apiService } from 'ts-api-toolkit';
 
 import {EmptyChatMessageBeforeSend} from 'models/ChatMessage';
 import {AdditionalDetails} from 'models/Modal';
-import authStore from 'stores/modules/authStore';
+import {authStore} from 'stores/authStore';
 
 export class MessageStore {
 
     @observable message = EmptyChatMessageBeforeSend;
 
-    @action setAdditionalDetails(details: AdditionalDetails): void {
+    @action
+    setAdditionalDetails(details: AdditionalDetails): void {
         this.message.abundance = details.abundance;
         this.message.coordinates = details.coordinates;
         this.message.species = details.species;
@@ -17,20 +18,24 @@ export class MessageStore {
         this.message.file = details.file;
     }
 
-    @action setText(text: string): void {
+    @action
+    setText(text: string): void {
         this.message.text = text;
     }
 
-    @action sendMessage(): void {
+    @action
+    sendMessage(): void {
         this.message.username = authStore.currentUser;
         this.message.datetimestamp = new Date();
-        apiService.post('/message', this.message);
-        this.clearMessage();
+        apiService.post('/message', this.message)
+            .then(() => this.clearMessage())
+            .catch((err) => console.log(err));
     }
 
-    @action clearMessage(): void {
+    @action
+    clearMessage(): void {
         this.message = EmptyChatMessageBeforeSend;
     }
 }
 
-export default new MessageStore();
+export const messageStore = new MessageStore();
