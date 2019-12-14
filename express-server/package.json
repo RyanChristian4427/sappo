@@ -3,9 +3,8 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
-        "serve:dev": "npm run build && node dist/server.js",
-        "serve:prod": "npm run build && cross-env NODE_ENV=production node dist/server.js",
-        "build": "tsc && npm run lint",
+        "serve:dev": "npm run lint && nodemon server.ts",
+        "serve:prod": "tsc && npm run lint && cross-env NODE_ENV=production node dist/server.js",
         "test": "jest --forceExit --coverage --verbose --detectOpenHandles",
         "lint": "eslint \"**/*.{js,ts}\""
     },
@@ -40,7 +39,9 @@
         "cross-env": "^6.0.3",
         "eslint": "^6.4.0",
         "jest": "^24.9.0",
+        "nodemon": "^2.0.1",
         "supertest": "^4.0.2",
-        "ts-jest": "^24.1.0"
+        "ts-jest": "^24.1.0",
+        "tsconfig-paths": "^3.9.0"
     }
 }
