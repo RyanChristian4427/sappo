@@ -1,5 +1,5 @@
 import request from 'supertest';
-import app from '../src/app';
+import {app} from 'src/app';
 
 describe('GET /api/v1/messages', () => {
     it('should return 200 OK', async () => {
@@ -19,18 +19,25 @@ describe('GET /api/v1/messages', () => {
     });
 });
 
-describe('POST /api/v1/message', () => {
-    it('should be able to post message', async () => {
-        const response = await request(app).post('/api/v1/message')
-            .field('abundance', 0)
-            .field('coordinates', [0,0])
-            .field('datetimestamp', '')
-            .field('file', '')
-            .field('species', '')
-            .field('temperature', 0)
-            .field('text', 'Hello World 2!')
-            .field('username', 'Sample Data 1');
-        return expect(response.status).toBe(200);
+describe('POST /api/v1/users/login', () => {
+    const data = {
+        abundance: 0,
+        coordinates: [0,0],
+        datetimestamp: '',
+        file: '',
+        species: '',
+        temperature: 0,
+        text: 'Hello world!',
+        username: 'Smoke Test',
+    };
+    it('should return 204 No Content', async () => {
+        const response = await request(app)
+            .post('/api/v1/message')
+            .send(data);
+        return (
+            expect(response.status).toBe(204)
+        );
     });
 });
+
 
