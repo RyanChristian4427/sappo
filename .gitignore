@@ -1,2 +1,5 @@
+# Exluding IDE files
+.idea/
+
 # Excluding KDE directory files
 .directory
