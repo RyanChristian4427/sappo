@@ -1,14 +1,17 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import * as http from 'http';
 import mongoose from 'mongoose';
-import path from 'path';
+import socketIo from 'socket.io';
 
-// Controllers (route handlers)
-import * as messageController from './controllers/messages';
-import {MONGODB_URI} from './util/secrets';
+import apiV1 from 'src/api/v1';
+import {setUpSockets} from 'src/sockets/setup';
+import logger from 'src/util/logger';
+import {MONGODB_URI} from 'src/util/secrets';
 
 // Create Express server
-const app = express();
+export const app = express();
+export const server = http.createServer(app);
 
 // Connect to MongoDB
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true } ).then(
@@ -22,15 +25,7 @@ app.set('port', process.env.PORT || 8000);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(
-    express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 })
-);
+// Socket configuration
+export const socket = setUpSockets(socketIo(server));
 
-/**
- * API examples routes.
- */
-app.post('/api/v1/message', messageController.postMessage);
-app.get('/api/v1/messages', messageController.getMessages);
-
-
-export default app;
+app.use('/api/v1', apiV1);
