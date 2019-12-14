@@ -1,6 +1,10 @@
 @charset "utf-8";
 @import 'variables';
 
+html {
+  overflow-y: hidden !important;
+}
+
 body {
   color: $theme-ash-grey !important;
 }
