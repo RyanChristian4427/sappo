@@ -49,11 +49,11 @@ export const Home: React.FC = observer(() => {
     return (
         <div className="chat-page">
             <HeroHeader currentUser={authStore.currentUser} openModal={openModal} />
-            {showUserModal &&
-                <Modal closeModal={closeModals} type={ModalType.selectUsername} />
-            }
-            {showDetailsModal &&
-                <Modal closeModal={closeModals} type={ModalType.additionalDetails} />
+            {(showUserModal)
+                ? <Modal closeModal={closeModals} type={ModalType.selectUsername} />
+                : (showDetailsModal)
+                    ? <Modal closeModal={closeModals} type={ModalType.additionalDetails} />
+                    : null
             }
             <ChatContainer openModal={openModal} handleSend={handleSend} submissionError={submissionError}/>
         </div>
