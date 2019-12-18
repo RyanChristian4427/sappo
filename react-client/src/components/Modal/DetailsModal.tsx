@@ -11,7 +11,7 @@ interface IProps {
 
 export const DetailsModal: React.FC<IProps> = (props: IProps) => {
     const [coordinatesAttached, setCoordinatesAttached] = useState(false);
-    const [file, setFile] = useState('');
+    const [file, setFile] = useState();
     const [validationError, setValidationError] = useState(false);
 
 
@@ -29,9 +29,13 @@ export const DetailsModal: React.FC<IProps> = (props: IProps) => {
             props.handleDetailsChange(field, event.target.value);
         } else if (field === DataFields.file) {
             if (event.target.files != null) {
-                const image = URL.createObjectURL(event.target.files[0]);
-                setFile(image);
-                props.handleDetailsChange(field, image);
+                const reader = new FileReader();
+                reader.readAsDataURL(event.target.files[0]);
+                reader.onload = (): void => {
+                    const base64 = reader.result!!.toString();
+                    setFile(base64);
+                    props.handleDetailsChange(field, base64);
+                };
             }
         }
     };
@@ -66,7 +70,7 @@ export const DetailsModal: React.FC<IProps> = (props: IProps) => {
                     </span>
                 </label>
             </div>
-            {(file !== '') &&
+            {file &&
                 <div className="container preview-container">
                     <h2 className="has-text-centered">Preview:</h2>
                     <img src={file} alt="Upload preview"/>
