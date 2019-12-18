@@ -20,10 +20,10 @@ export const Home: React.FC = observer(() => {
     const [showDetailsModal, setShowDetailsModal] = useState(false);
 
 
-    const handleModal = (type: ModalType): void => {
-        if (type === ModalType.selectUsername) {
+    const openModal = (modalType: ModalType): void => {
+        if (modalType === ModalType.selectUsername) {
             setShowUserModal(true);
-        } else if (type === ModalType.additionalDetails) {
+        } else if (modalType === ModalType.additionalDetails) {
             setShowDetailsModal(true);
         }
     };
@@ -34,27 +34,27 @@ export const Home: React.FC = observer(() => {
     };
 
     // Returns true if the message has been sent
-    const handleSend = (): boolean => {
-        if (authStore.currentUser === '') {
-            setShowUserModal(true);
-        } else if (messageStore.message.text !== '') {
-            messageStore.sendMessage();
-            return true;
+    const handleSubmit = (): boolean => {
+        if (authStore.currentUser) {
+            if (messageStore.message.text) {
+                messageStore.sendMessage();
+                return true;
+            }
         }
+        setShowUserModal(true);
         return false;
     };
 
-    const modal = (showUserModal)
-        ? <Modal closeModal={closeModal} type={ModalType.selectUsername} />
-        : (showDetailsModal)
-            ? <Modal closeModal={closeModal} type={ModalType.additionalDetails} />
-            : null;
-
     return (
         <div className="chat-page">
-            <HeroHeader currentUser={authStore.currentUser} handleModal={handleModal} />
-            {modal}
-            <ChatContainer handleModal={handleModal} handleSend={handleSend}/>
+            <HeroHeader currentUser={authStore.currentUser} openModal={openModal} />
+            {showUserModal &&
+                <Modal closeModal={closeModal} type={ModalType.selectUsername} />
+            }
+            {showDetailsModal &&
+                <Modal closeModal={closeModal} type={ModalType.additionalDetails} />
+            }
+            <ChatContainer openModal={openModal} handleSend={handleSubmit}/>
         </div>
     );
 });

@@ -12,7 +12,7 @@ import './ChatContainer.scss';
 
 
 interface IProps {
-    handleModal: (type: ModalType) => void;
+    openModal: (type: ModalType) => void;
     handleSend: () => boolean;
 }
 
@@ -85,7 +85,7 @@ export const ChatContainer: React.FC<IProps> = observer((props: IProps) => {
                 <div className="control">
                     <button className="button is-xanadu-light"
                             id="details-button"
-                            onClick={((): void => props.handleModal(ModalType.additionalDetails))}>
+                            onClick={((): void => props.openModal(ModalType.additionalDetails))}>
                         Add Details
                     </button>
                 </div>

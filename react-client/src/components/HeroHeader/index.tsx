@@ -8,7 +8,7 @@ import './HeroHeader.scss';
 
 interface IProps {
     currentUser: string;
-    handleModal: (type: ModalType) => void;
+    openModal: (type: ModalType) => void;
 }
 
 export default class HeroHeader extends React.Component<IProps, {}> {
@@ -34,7 +34,7 @@ export default class HeroHeader extends React.Component<IProps, {}> {
                                 {currentlyLoggedInAs}
                             </div>
                             <div className="navbar-end">
-                                <button className="button is-charleston-green-dark" onClick={((): void => this.props.handleModal(ModalType.selectUsername))}>Pick User Name</button>
+                                <button className="button is-charleston-green-dark" onClick={((): void => this.props.openModal(ModalType.selectUsername))}>Pick User Name</button>
                             </div>
                         </div>
                     </div>

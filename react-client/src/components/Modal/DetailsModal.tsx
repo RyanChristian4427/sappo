@@ -52,8 +52,7 @@ export const DetailsModal: React.FC<IProps> = (props: IProps) => {
             <input className="input" type="text" placeholder="Abundance" onChange={handleChange(DataFields.abundance)} />
             <input className="input" type="text" placeholder="Species" onChange={handleChange(DataFields.species)} />
             <div className="has-text-centered">
-                {
-                    (coordinatesAttached)
+                {(coordinatesAttached)
                     ? <button className="button is-deep-space-sparkle">Coordinates Successfully Attached!</button>
                     : <button className="button is-xanadu-light" onClick={currentLocation}>Attach Current Coordinates</button>
                 }
