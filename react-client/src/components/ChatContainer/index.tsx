@@ -14,6 +14,7 @@ import './ChatContainer.scss';
 interface IProps {
     openModal: (type: ModalType) => void;
     handleSend: () => boolean;
+    submissionError: string;
 }
 
 export const ChatContainer: React.FC<IProps> = observer((props: IProps) => {
@@ -48,7 +49,6 @@ export const ChatContainer: React.FC<IProps> = observer((props: IProps) => {
         });
 
         socket.on('new_message', (message: ChatMessageAfterReturn) => {
-            console.log('New message');
             setMessages((existingMessages: ChatMessageAfterReturn[]) => {
                 if (existingMessages) return [...existingMessages, message];
                 else return [message];
@@ -71,7 +71,10 @@ export const ChatContainer: React.FC<IProps> = observer((props: IProps) => {
                 }
             </div>
             {showJoinMessage &&
-                <h2 className="join-message">{newestUser} has joined the chat</h2>
+                <h2 className="alert">{newestUser} has joined the chat</h2>
+            }
+            {props.submissionError &&
+                <h2 className="alert error">{props.submissionError}</h2>
             }
             <div className="field has-addons">
                 <div className="control is-expanded">

@@ -18,6 +18,7 @@ export const Home: React.FC = observer(() => {
 
     const [showUserModal, setShowUserModal] = useState(false);
     const [showDetailsModal, setShowDetailsModal] = useState(false);
+    const [submissionError, setSubmissionError] = useState('');
 
 
     const openModal = (modalType: ModalType): void => {
@@ -28,20 +29,20 @@ export const Home: React.FC = observer(() => {
         }
     };
 
-    const closeModal = (): void => {
+    const closeModals = (): void => {
         setShowUserModal(false);
         setShowDetailsModal(false);
     };
 
     // Returns true if the message has been sent
-    const handleSubmit = (): boolean => {
+    const handleSend = (): boolean => {
         if (authStore.currentUser) {
             if (messageStore.message.text) {
                 messageStore.sendMessage();
+                setSubmissionError('');
                 return true;
-            }
-        }
-        setShowUserModal(true);
+            } else setSubmissionError('Message Must Have Text');
+        } else setShowUserModal(true);
         return false;
     };
 
@@ -49,12 +50,12 @@ export const Home: React.FC = observer(() => {
         <div className="chat-page">
             <HeroHeader currentUser={authStore.currentUser} openModal={openModal} />
             {showUserModal &&
-                <Modal closeModal={closeModal} type={ModalType.selectUsername} />
+                <Modal closeModal={closeModals} type={ModalType.selectUsername} />
             }
             {showDetailsModal &&
-                <Modal closeModal={closeModal} type={ModalType.additionalDetails} />
+                <Modal closeModal={closeModals} type={ModalType.additionalDetails} />
             }
-            <ChatContainer openModal={openModal} handleSend={handleSubmit}/>
+            <ChatContainer openModal={openModal} handleSend={handleSend} submissionError={submissionError}/>
         </div>
     );
 });
