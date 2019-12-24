@@ -1,6 +1,6 @@
 # Sappo Express Server
 
-This is the back end server for Sappo, an ad hoc communication app used to assist in citizen science. The project is centered around the Brazilian Atlantic Rainforest, aims to retrieve information about frogs in particular. "Sappo" is Portuguese for "frog".
+This is the back end server for Sappo, an ad hoc communication app used to assist in citizen science. The project is centered around the Brazilian Atlantic Rainforest and aims to retrieve information about frogs in particular. "Sappo" is Portuguese for "frog".
 
 The back end for this project is written using Express, a fast, unopinionated, minimalist web framework for Node.js. The server is written entirely in TypeScript, it uses MongoDB for data persistence, and it utilizes Mongoose for the database connections. 
 
@@ -15,33 +15,41 @@ These instructions will get you a copy of the project up and running on your loc
 ```
 NodeJs
 NPM
+Docker (optional)
+MongoDB (optional)
 ```
 
 ### Running
 
-To run the web server on localhost, you will need to run from the root directory: 
+To run the web server on localhost, first you will need to install all dependencies. Run from the root directory: 
 
 ```
 npm install
 ```
 
-Then, to run the dev build, run:
+Then a decision will need to be made about the database. I have included a MongoDB Atlas database for use in a 'production' environment (i.e., for my lecturer to use while marking). There's no guarantees that this will remain up.
+
+If it is not currently up, you will need to use the development profile, which means utilizing the docker-compose file I have provided or using your own install. Using the docker-compose files means you will have to do no configuration yourself.
+
+To build the Mongo database from docker, run:
 
 ```
 docker-compose up --build -d
 ```
 
-#### Compiles and uses a local Mongo Docker Container for a Database
+After that, the dev server can be ran with:
 
 ```
 npm run serve:dev
 ```
 
-#### Compiles and uses MongoDB Atlas for a Database
+If you'd like to use the production profile, that can be ran with:
 
 ```
 npm run serve:prod
 ```
+
+If you choose to not use production (or can't), and don't want to use the Docker based database, you will need to edit the [.env](.env) file to include the correct database URL and credentials. 
 
 ## Code Style
 
