@@ -1,4 +1,4 @@
-import {app, server} from './app';
+import {app, server} from 'src/app';
 import logger from 'src/util/logger';
 
 server.listen(app.get('port'), () => {
