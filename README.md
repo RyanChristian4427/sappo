@@ -39,19 +39,25 @@ Once installation is complete, run the following in `react-client`:
 npm run serve
 ```
 
-And the following in `express-server` if you intend to use an already setup MongoDB.Atlas instance, instead of a locally hosted docker image (which is included in a docker-compose file within `express-server`):
+And the following in `express-server` if you intend to use an already setup MongoDB.Atlas instance, instead of a locally hosted Mongo database:
 
 ```
 npm run serve:prod
 ```
 
+If you do choose to use a local database, I have included a docker-compose file in `express-server` that you can use, and the development profile is already set up to use. If you have a local install, you will need to edit the [.env](express-server/.env) file and enter your database's URL and credentials. The development profile can then be ran via:
+
+```
+npm run serve:dev
+```
+
 To use the application, navigate to `http://localhost:3000` in your browser of choice, and open a duplicate tab as well, to observe how a conversation would work. 3 messages should be loaded in from the database to simulate joining an on-going conversation. 
 
-From there, you can choose a username from the top right of the screen, or alternatively, you will be prompted to choose one when sending a message. After choosing a name, a message will appear for other users, anonymous or those who have also chosen a name, letting them know someone new has joined the chat and has chosen a name (so supposedly they'd like to talk or contribute). You can see this message on a second browser tab. This message will fade once someone else joins, or after 20 seconds have passed, which ever comes first.
+From there, you can choose a username from the top right of the screen, or alternatively, you will be prompted to choose one when sending a message. After choosing a name, a message will appear for other users, anonymous or those who have also chosen a name, letting them know someone new has joined the chat and has chosen a name (so supposedly they'd like to talk or contribute). You can see this message on the second browser tab, and is located towards the bottom of the screen, right above the text entry field. This message will fade once someone else joins, or after 20 seconds have passed, which ever comes first.
 
-A message requires both a username and a text, so fill out the input field at the bottom of the screen. Optionally, you can open the `Add Details` menu from the button on the end of the input bar, or simply send the message. The `Add Details` menu includes fields to enter an abundance, a species, provide your current coordinates using the Geolocation API, enter a temperature, and/or upload a picture. Each of these fields is optional, so you can add details for just one, all of them, or any combination you so choose. Pressing `Save Changes` from the `Add Details` menu will save without immediately sending, so you can overwrite the saved information by opening the menu again and filling it back out.
+A message requires both a username and text, so fill out the input field at the bottom of the screen. Optionally, you can open the `Add Details` menu from the button on the end of the input bar, or simply send the message. The `Add Details` menu includes fields to enter an abundance, a species, provide your current coordinates using the Geolocation API, enter a temperature, and/or upload a picture. Each of these fields is optional, so you can add details for just one, all of them, or any combination you so choose. Pressing `Save Changes` from the `Add Details` menu will save without immediately sending, so you can overwrite the saved information by opening the menu again and filling it back out.
  
- Pressing send from the main screen will submit the message to all connected users. Messages matching your user name will appear on the right, and messages from others shall appear on the left. 
+ Pressing send from the main screen will submit the message to all connected users. Messages matching your user name will appear on the right, and messages from others shall appear on the left. This message is then stored on the database so others who join the chat afterwards can see it as well.
 
 ## Built With
 
