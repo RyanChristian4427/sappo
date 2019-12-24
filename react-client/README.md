@@ -1,6 +1,6 @@
 # Sappo React Client
 
-This is the front end client for Sappo, an ad hoc communication app used to assist in citizen science. The project is centered around the Brazilian Atlantic Rainforest, aims to retrieve information about frogs in particular. "Sappo" is Portuguese for "frog".
+This is the front end client for Sappo, an ad hoc communication app used to assist in citizen science. The project is centered around the Brazilian Atlantic Rainforest and aims to retrieve information about frogs in particular. "Sappo" is Portuguese for "frog".
 
 The front end for this project is written in React, a library used to for building user interfaces. Global state is managed using MobX, every component and helper file is written using TypeScript, and this project utilizes the Bulma SCSS framework.
 
