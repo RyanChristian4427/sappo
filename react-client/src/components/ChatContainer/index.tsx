@@ -1,15 +1,14 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {observer} from 'mobx-react-lite';
-import {apiService} from 'ts-api-toolkit';
+import React, { useContext, useEffect, useState } from 'react';
+import { observer } from 'mobx-react-lite';
 
 import MessageCard from 'components/MessageCard';
-import {ChatMessageAfterReturn} from 'models/ChatMessage';
-import {ModalType} from 'models/Modal';
+import { ChatMessageAfterReturn } from 'models/ChatMessage';
+import { ModalType } from 'models/Modal';
 import socket from 'models/Sockets';
-import {AuthStoreContext, MessageStoreContext} from 'stores';
+import { getMessages } from 'services/api';
+import { AuthStoreContext, MessageStoreContext } from 'stores';
 
 import './ChatContainer.scss';
-
 
 interface IProps {
     openModal: (type: ModalType) => void;
@@ -27,15 +26,14 @@ export const ChatContainer: React.FC<IProps> = observer((props: IProps) => {
     const [newestUser, setNewestUser] = useState('');
 
     useEffect(() => {
-        apiService.get('/messages')
-            .then(({ data }) => {
-                data.forEach((message: ChatMessageAfterReturn) => {
-                    setMessages((existingMessages: ChatMessageAfterReturn[]) => {
-                        if (existingMessages) return [...existingMessages, message];
-                        else return [message];
-                    });
+        getMessages().then((messages: ChatMessageAfterReturn[]) => {
+            messages.forEach((message: ChatMessageAfterReturn) => {
+                setMessages((existingMessages: ChatMessageAfterReturn[]) => {
+                    if (existingMessages) return [...existingMessages, message];
+                    else return [message];
                 });
             });
+        });
 
         socket.on('new_user_join', (newUser: string) => {
             if (newUser !== authStore.currentUser) {
@@ -61,43 +59,37 @@ export const ChatContainer: React.FC<IProps> = observer((props: IProps) => {
             <div className="messages">
                 {messages &&
                     messages.map((message: ChatMessageAfterReturn, index: number) => {
-                        return (
-                            <MessageCard key={index}
-                                         message={message}
-                                         currentUser={authStore.currentUser}
-                            />
-                        );
-                    })
-                }
+                        return <MessageCard key={index} message={message} currentUser={authStore.currentUser} />;
+                    })}
             </div>
-            {showJoinMessage &&
-                <h2 className="alert">{newestUser} has joined the chat</h2>
-            }
-            {props.submissionError &&
-                <h2 className="alert error">{props.submissionError}</h2>
-            }
+            {showJoinMessage && <h2 className="alert">{newestUser} has joined the chat</h2>}
+            {props.submissionError && <h2 className="alert error">{props.submissionError}</h2>}
             <div className="field has-addons">
                 <div className="control is-expanded">
-                    <input className="input"
-                           type="text"
-                           placeholder="Send Text Message"
-                           value={text}
-                           onChange={(e): void => setText(e.target.value)}
+                    <input
+                        className="input"
+                        type="text"
+                        placeholder="Send Text Message"
+                        value={text}
+                        onChange={(e): void => setText(e.target.value)}
                     />
                 </div>
                 <div className="control">
-                    <button className="button is-xanadu-light"
-                            id="details-button"
-                            onClick={((): void => props.openModal(ModalType.additionalDetails))}>
+                    <button
+                        className="button is-xanadu-light"
+                        id="details-button"
+                        onClick={(): void => props.openModal(ModalType.additionalDetails)}
+                    >
                         Add Details
                     </button>
                 </div>
                 <div className="control">
-                    <button className="button is-xanadu-light"
-                            onClick={(): void => {
-                                messageStore.setText(text);
-                                if (props.handleSend()) setText('');
-                            }}
+                    <button
+                        className="button is-xanadu-light"
+                        onClick={(): void => {
+                            messageStore.setText(text);
+                            if (props.handleSend()) setText('');
+                        }}
                     >
                         Send
                     </button>

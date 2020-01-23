@@ -1,12 +1,11 @@
 import { observable, action } from 'mobx';
 import { apiService } from 'ts-api-toolkit';
 
-import {EmptyChatMessageBeforeSend} from 'models/ChatMessage';
-import {AdditionalDetails} from 'models/Modal';
-import {authStore} from 'stores/authStore';
+import { EmptyChatMessageBeforeSend } from 'models/ChatMessage';
+import { AdditionalDetails } from 'models/Modal';
+import { authStore } from 'stores/authStore';
 
 export class MessageStore {
-
     @observable message = EmptyChatMessageBeforeSend;
 
     @action
@@ -27,7 +26,8 @@ export class MessageStore {
     sendMessage(): void {
         this.message.username = authStore.currentUser;
         this.message.datetimestamp = new Date();
-        apiService.post('/message', this.message)
+        apiService
+            .post('/message', this.message)
             .then(() => this.clearMessage())
             .catch((err) => console.log(err));
     }

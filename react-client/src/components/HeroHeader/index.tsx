@@ -1,10 +1,9 @@
 import React from 'react';
 
 import logo from 'assets/logo.png';
-import {ModalType} from 'models/Modal';
+import { ModalType } from 'models/Modal';
 
 import './HeroHeader.scss';
-
 
 interface IProps {
     currentUser: string;
@@ -15,9 +14,8 @@ export default class HeroHeader extends React.Component<IProps, {}> {
     render(): React.ReactNode {
         const currentUser = this.props.currentUser;
 
-        const currentlyLoggedInAs = (currentUser !== '')
-            ? <h2 className="subtitle">Currently logged in as: {currentUser}</h2>
-            : null;
+        const currentlyLoggedInAs =
+            currentUser !== '' ? <h2 className="subtitle">Currently logged in as: {currentUser}</h2> : null;
 
         return (
             <section className="hero is-xanadu-light is-bold is-small">
@@ -25,16 +23,19 @@ export default class HeroHeader extends React.Component<IProps, {}> {
                     <div className="navbar">
                         <div className="container">
                             <div className="navbar-brand">
-                                <img className="navbar-item" src={logo} alt="Sappo logo"/>
+                                <img className="navbar-item" src={logo} alt="Sappo logo" />
                             </div>
                             <div className="navbar-content">
-                                <h1 className="title">
-                                    Sappo
-                                </h1>
+                                <h1 className="title">Sappo</h1>
                                 {currentlyLoggedInAs}
                             </div>
                             <div className="navbar-end">
-                                <button className="button is-charleston-green-dark" onClick={((): void => this.props.openModal(ModalType.selectUsername))}>Pick User Name</button>
+                                <button
+                                    className="button is-charleston-green-dark"
+                                    onClick={(): void => this.props.openModal(ModalType.selectUsername)}
+                                >
+                                    Pick User Name
+                                </button>
                             </div>
                         </div>
                     </div>

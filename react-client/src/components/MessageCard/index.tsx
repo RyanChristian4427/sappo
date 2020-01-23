@@ -1,10 +1,9 @@
 import React from 'react';
 
-import {ChatMessageAfterReturn} from 'models/ChatMessage';
-import {displayTimeStamp} from './utility';
+import { ChatMessageAfterReturn } from 'models/ChatMessage';
+import { displayTimeStamp } from './utility';
 
 import './MessageCard.scss';
-
 
 interface MessageProps {
     message: ChatMessageAfterReturn;
@@ -28,25 +27,20 @@ export default class MessageCard extends React.Component<MessageProps, {}> {
             );
         };
 
-        const abundance = (message.abundance !== 0)
-            ? messageRow('Abundance', message.abundance.toString())
-            : null;
+        const abundance = message.abundance !== 0 ? messageRow('Abundance', message.abundance.toString()) : null;
 
-        const coordinates = (!message.coordinates.every((e) => [0,0].includes(e)))
+        const coordinates = !message.coordinates.every((e) => [0, 0].includes(e))
             ? messageRow('Coordinates', message.coordinates.toString())
             : null;
 
-        const species = (message.species !== '')
-            ? messageRow('Species', message.species)
-            : null;
+        const species = message.species !== '' ? messageRow('Species', message.species) : null;
 
-        const temperature = (message.temperature !== 0)
-            ? messageRow('Current Temperature', message.temperature.toString() + '° Celsius')
-            : null;
+        const temperature =
+            message.temperature !== 0
+                ? messageRow('Current Temperature', message.temperature.toString() + '° Celsius')
+                : null;
 
-        const file = (message.file !== '')
-            ? <img src={message.file}  alt={message.username + '\'s image'}/>
-            : null;
+        const file = message.file !== '' ? <img src={message.file} alt={message.username + "'s image"} /> : null;
 
         const messageContent = (): React.ReactNode => {
             return (
@@ -63,20 +57,19 @@ export default class MessageCard extends React.Component<MessageProps, {}> {
         };
 
         // Decides what side of the screen a message should appear on. If you sent it, right side, someone else, left.
-        const alignedContent = (message.username !== this.props.currentUser)
-            ? <React.Fragment>
-                <div className="level-left">{messageContent()}</div>
-                <div className="level-right"/>
-              </React.Fragment>
-            : <React.Fragment>
-                <div className="level-left"/>
-                <div className="level-right">{messageContent()}</div>
-              </React.Fragment>;
+        const alignedContent =
+            message.username !== this.props.currentUser ? (
+                <React.Fragment>
+                    <div className="level-left">{messageContent()}</div>
+                    <div className="level-right" />
+                </React.Fragment>
+            ) : (
+                <React.Fragment>
+                    <div className="level-left" />
+                    <div className="level-right">{messageContent()}</div>
+                </React.Fragment>
+            );
 
-        return (
-            <div className="message-card level">
-                {alignedContent}
-            </div>
-        );
+        return <div className="message-card level">{alignedContent}</div>;
     }
 }

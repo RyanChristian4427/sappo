@@ -23,6 +23,11 @@ export function displayTimeStamp(datetime: string): string {
     return sixMonthsAgo > emailDate && today.getFullYear() !== emailDate.getFullYear()
         ? months[emailDate.getMonth()] + ' ' + emailDate.getUTCDate() + ' ' + emailDate.getFullYear()
         : today.getTime() - emailDate.getTime() < dayInMillis
-            ? twentyFourHourToTwelve(emailDate.getHours()) + ':' + (emailDate.getMinutes()).toString().padStart(2, '0')
-            : months[emailDate.getMonth()] + ' ' + emailDate.getUTCDate();
+        ? twentyFourHourToTwelve(emailDate.getHours()) +
+          ':' +
+          emailDate
+              .getMinutes()
+              .toString()
+              .padStart(2, '0')
+        : months[emailDate.getMonth()] + ' ' + emailDate.getUTCDate();
 }
