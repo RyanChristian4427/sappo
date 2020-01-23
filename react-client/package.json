@@ -6,7 +6,7 @@
         "serve": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test",
-        "lint": "eslint src/**/*.{js,jsx,ts,tsx}"
+        "lint": "eslint src/**/*.{js,ts,tsx} --quiet --fix"
     },
     "dependencies": {
         "bulma": "^0.8.0",
@@ -27,10 +27,14 @@
         "@types/react": "16.9.9",
         "@types/react-dom": "16.9.2",
         "@types/react-router-dom": "^5.1.0",
-        "@types/socket.io-client": "^1.4.32"
-    },
-    "eslintConfig": {
-        "extends": "react-app"
+        "@types/socket.io-client": "^1.4.32",
+        "@typescript-eslint/eslint-plugin": "^2.3.1",
+        "@typescript-eslint/parser": "^2.3.1",
+        "eslint": "^6.0.1",
+        "eslint-config-prettier": "^6.9.0",
+        "eslint-plugin-prettier": "^3.1.2",
+        "eslint-plugin-react": "^7.17.0",
+        "prettier": "^1.19.1"
     },
     "jest": {
         "transformIgnorePatterns": [
