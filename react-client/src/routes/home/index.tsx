@@ -1,16 +1,14 @@
-import React, {useContext, useState} from 'react';
-import {observer} from 'mobx-react-lite';
+import React, { useContext, useState } from 'react';
+import { observer } from 'mobx-react-lite';
 
-import {ChatContainer} from 'components/ChatContainer';
+import { ChatContainer } from 'components/ChatContainer';
 
 import HeroHeader from 'components/HeroHeader';
-import {Modal} from 'components/Modal';
-import {ModalType} from 'models/Modal';
-import {AuthStoreContext, MessageStoreContext} from 'stores';
+import { Modal } from 'components/Modal';
+import { ModalType } from 'models/Modal';
+import { AuthStoreContext, MessageStoreContext } from 'stores';
 
-
-import './Home.scss';
-
+import 'routes/home/Home.scss';
 
 export const Home: React.FC = observer(() => {
     const authStore = useContext(AuthStoreContext);
@@ -19,7 +17,6 @@ export const Home: React.FC = observer(() => {
     const [showUserModal, setShowUserModal] = useState(false);
     const [showDetailsModal, setShowDetailsModal] = useState(false);
     const [submissionError, setSubmissionError] = useState('');
-
 
     const openModal = (modalType: ModalType): void => {
         if (modalType === ModalType.selectUsername) {
@@ -49,13 +46,12 @@ export const Home: React.FC = observer(() => {
     return (
         <div className="chat-page">
             <HeroHeader currentUser={authStore.currentUser} openModal={openModal} />
-            {(showUserModal)
-                ? <Modal closeModal={closeModals} type={ModalType.selectUsername} />
-                : (showDetailsModal)
-                    ? <Modal closeModal={closeModals} type={ModalType.additionalDetails} />
-                    : null
-            }
-            <ChatContainer openModal={openModal} handleSend={handleSend} submissionError={submissionError}/>
+            {showUserModal ? (
+                <Modal closeModal={closeModals} type={ModalType.selectUsername} />
+            ) : showDetailsModal ? (
+                <Modal closeModal={closeModals} type={ModalType.additionalDetails} />
+            ) : null}
+            <ChatContainer openModal={openModal} handleSend={handleSend} submissionError={submissionError} />
         </div>
     );
 });
